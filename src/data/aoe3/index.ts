@@ -3,6 +3,7 @@ import { aoe3Civilizations } from "./civs";
 import { aoe3Decks, aoe3Openings, aoe3Plans } from "./decks";
 import { evidenceLabel, resolveEvidenceSources } from "./evidence";
 import { aoe3Maps } from "./maps";
+import { aoe3Matchups, getMatchupsForCiv, getMatchupsByArchetype } from "./matchups";
 import { artPipeline } from "./artPipeline";
 import { replayPipeline } from "./replayPipeline";
 import { replayFieldMatrix, replayImportSample, replaySeedReports } from "./replaySamples";
@@ -20,6 +21,7 @@ import type { Deck, Plan, ShipmentCard } from "./schema";
 
 export * from "./schema";
 export * from "./evidence";
+export * from "./matchups";
 export * from "./artPipeline";
 export * from "./replayPipeline";
 export * from "./replaySamples";
@@ -36,9 +38,12 @@ export {
   aoe3Civilizations,
   aoe3Decks,
   aoe3Maps,
+  aoe3Matchups,
   aoe3Openings,
   aoe3Plans,
   aoe3Sources,
+  getMatchupsForCiv,
+  getMatchupsByArchetype,
   artPipeline,
   contentCitations,
   evidenceLabel,

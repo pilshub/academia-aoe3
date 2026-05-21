@@ -46,9 +46,9 @@ export default function HomePage() {
                   <li>
                     <Images size={18} aria-hidden="true" />
                     <div>
-                      Imagen oficial como fondo
+                      Seed pack propio de civ heroes
                       <br />
-                      <span>Asset pack propio y Nano Banana 2 quedan preparados.</span>
+                      <span>8 SVG generados (FR/BR/OT/SP/DU/GE/RU/AZ); Nano Banana 2 reemplaza cuando haya key.</span>
                     </div>
                   </li>
                   <li>

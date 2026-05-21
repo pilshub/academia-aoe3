@@ -5,6 +5,19 @@ import { PageHero } from "@/components/PageHero";
 import { SiteShell } from "@/components/SiteShell";
 import { aoe3Civilizations, getPlan } from "@/data/aoe3";
 
+// Civs con SVG en public/assets/generated/civ-{id}.svg.
+// Las demás caen al fallback de civ-band con accent color.
+const CIV_HERO_SVG = new Set([
+  "french",
+  "british",
+  "ottomans",
+  "spanish",
+  "dutch",
+  "germans",
+  "russians",
+  "aztecs",
+]);
+
 export default function CivsPage() {
   return (
     <SiteShell>
@@ -18,17 +31,29 @@ export default function CivsPage() {
           <div className="wrap grid">
             {aoe3Civilizations.map((civ) => (
               <article className="card" key={civ.id}>
-                <div
-                  className="civ-band"
-                  style={
-                    {
-                      "--civ-image": `linear-gradient(135deg, ${civ.accent}, rgba(17, 17, 15, 0.2))`,
-                      "--accent": civ.accent,
-                    } as React.CSSProperties
-                  }
-                >
-                  <span className="crest">{civ.shortName}</span>
-                </div>
+                {CIV_HERO_SVG.has(civ.id) ? (
+                  <img
+                    className="civ-hero"
+                    src={`/assets/generated/civ-${civ.id}.svg`}
+                    alt={`${civ.name} hero tile`}
+                    width={400}
+                    height={240}
+                    loading="lazy"
+                    style={{ width: "100%", height: "auto", display: "block", borderRadius: "8px 8px 0 0" }}
+                  />
+                ) : (
+                  <div
+                    className="civ-band"
+                    style={
+                      {
+                        "--civ-image": `linear-gradient(135deg, ${civ.accent}, rgba(17, 17, 15, 0.2))`,
+                        "--accent": civ.accent,
+                      } as React.CSSProperties
+                    }
+                  >
+                    <span className="crest">{civ.shortName}</span>
+                  </div>
+                )}
                 <div className="card-top">
                   <span className="status">{civ.reviewStatus}</span>
                   <span className="pill">{civ.difficulty}</span>

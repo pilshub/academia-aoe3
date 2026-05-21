@@ -3,6 +3,7 @@ import {
   aoe3Cards,
   aoe3Civilizations,
   aoe3Decks,
+  aoe3Matchups,
   aoe3Openings,
   aoe3Plans,
   aoe3Sources,
@@ -87,6 +88,15 @@ describe("data integrity", () => {
       for (const sid of item.ids) {
         expect(sourceIds.has(sid), `${item.kind} ${item.id} -> unknown source ${sid}`).toBe(true);
       }
+    }
+  });
+
+  it("every matchup brief references an existing civ and plan", () => {
+    const civIds = new Set(aoe3Civilizations.map((c) => c.id));
+    const planIds = new Set(aoe3Plans.map((p) => p.id));
+    for (const matchup of aoe3Matchups) {
+      expect(civIds.has(matchup.ownCivId), `matchup ${matchup.id} -> unknown civ ${matchup.ownCivId}`).toBe(true);
+      expect(planIds.has(matchup.planId), `matchup ${matchup.id} -> unknown plan ${matchup.planId}`).toBe(true);
     }
   });
 
