@@ -1,0 +1,46 @@
+{
+  "source": "manual-json",
+  "map": "Texas",
+  "mode": "Supremacy 1v1",
+  "duration": "16:08",
+  "patch": "13.690",
+  "academyMeta": {
+    "fixtureKind": "synthetic-seed",
+    "purpose": "UI/coach testing; NO es replay real.",
+    "linkedPlanId": "british-manor-boom",
+    "lessons": [
+      "Virginia Company sin scouting de all-in puede ser carta trampa.",
+      "Sin Longbow/Musketeer al 7:00, el rival toma todo el mapa externo."
+    ]
+  },
+  "players": [
+    {
+      "name": "Alumno",
+      "civ": "British",
+      "result": "Loss",
+      "deck": ["3 Villagers", "Virginia Company", "700 Wood", "6 Longbowmen", "5 Villagers"],
+      "shipments": [
+        { "time": "2:00", "card": "3 Villagers" },
+        { "time": "4:55", "card": "Virginia Company" },
+        { "time": "7:45", "card": "700 Wood" },
+        { "time": "10:20", "card": "6 Longbowmen" }
+      ],
+      "ageUps": [
+        { "age": "Age II", "time": "4:20", "politician": "The Ambassador" }
+      ]
+    },
+    {
+      "name": "Rival",
+      "civ": "French",
+      "result": "Win",
+      "shipments": [
+        { "time": "2:10", "card": "3 Coureurs des Bois" },
+        { "time": "5:40", "card": "700 Wood" },
+        { "time": "7:30", "card": "8 Crossbowmen" }
+      ],
+      "ageUps": [
+        { "age": "Age II", "time": "4:40", "politician": "Quartermaster" }
+      ]
+    }
+  ]
+}

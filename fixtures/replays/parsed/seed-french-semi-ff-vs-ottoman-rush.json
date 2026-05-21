@@ -1,0 +1,46 @@
+{
+  "source": "manual-json",
+  "map": "Great Plains",
+  "mode": "Supremacy 1v1",
+  "duration": "14:32",
+  "patch": "13.690",
+  "academyMeta": {
+    "fixtureKind": "synthetic-seed",
+    "purpose": "UI/coach testing; NO es replay real. Replace con parser output cuando haya replays.",
+    "linkedPlanId": "french-semi-ff",
+    "lessons": [
+      "El segundo envio greedy contra rush visible es el error mas comun.",
+      "700 Wood debe convertirse en infraestructura inmediatamente, no flotar."
+    ]
+  },
+  "players": [
+    {
+      "name": "Alumno",
+      "civ": "French",
+      "result": "Loss",
+      "deck": ["3 Coureurs des Bois", "700 Wood", "4 Coureurs des Bois", "700 Coin", "8 Crossbowmen"],
+      "shipments": [
+        { "time": "2:05", "card": "3 Coureurs des Bois" },
+        { "time": "5:10", "card": "700 Wood" },
+        { "time": "6:55", "card": "4 Coureurs des Bois" }
+      ],
+      "ageUps": [
+        { "age": "Age II", "time": "4:35", "politician": "Quartermaster" },
+        { "age": "Age III", "time": "9:20", "politician": "Exiled Prince" }
+      ]
+    },
+    {
+      "name": "Rival",
+      "civ": "Ottomans",
+      "result": "Win",
+      "shipments": [
+        { "time": "4:55", "card": "3 Hussars" },
+        { "time": "6:20", "card": "5 Janissaries" },
+        { "time": "8:10", "card": "700 Coin" }
+      ],
+      "ageUps": [
+        { "age": "Age II", "time": "4:25", "politician": "Governor" }
+      ]
+    }
+  ]
+}

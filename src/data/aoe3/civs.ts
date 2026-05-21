@@ -7,6 +7,12 @@ const baseRosterEvidence = sourceBackedEvidence(
   ["fe-civ-roster"],
 );
 
+const reviewableEvidence = sourceBackedEvidence(
+  "Identidad estrategica con powerSpikes y mistakes editoriales. Pendiente verificar timings exactos contra Samurai Strategy School/ESOC antes de canonical.",
+  ["forgotten-empires-civs", "samurai-strategy-school", "academy-seed"],
+  ["fe-civ-roster", "samurai-civ-overview"],
+);
+
 const dlcRosterEvidence = (sourceId: string, evidenceId: string) =>
   sourceBackedEvidence(
     "Existencia de civ verificada en fuente oficial/DLC; identidad estrategica queda como seed editorial hasta validar builds actuales.",
@@ -87,8 +93,8 @@ export const aoe3Civilizations: CivilizationProfile[] = [
     mistakes: ["Bancos sin defensa", "No scoutar all-in", "Faltar madera para infraestructura"],
     recommendedPlanIds: ["dutch-bank-defense"],
     accent: "#e17a2d",
-    evidence: baseRosterEvidence,
-    reviewStatus: "source-backlog",
+    evidence: reviewableEvidence,
+    reviewStatus: "needs-review",
   },
   {
     id: "germans",
@@ -102,8 +108,8 @@ export const aoe3Civilizations: CivilizationProfile[] = [
     mistakes: ["Perder Uhlans sin dano", "Greed sin pared/scout", "No sincronizar shipment y produccion"],
     recommendedPlanIds: ["german-semi-ff-raid"],
     accent: "#8f8170",
-    evidence: baseRosterEvidence,
-    reviewStatus: "source-backlog",
+    evidence: reviewableEvidence,
+    reviewStatus: "needs-review",
   },
   {
     id: "portuguese",
@@ -132,8 +138,8 @@ export const aoe3Civilizations: CivilizationProfile[] = [
     mistakes: ["Atacar sin refuerzos", "No convertir masa en mapa", "Quedarse atras en tech si no hay dano"],
     recommendedPlanIds: ["russian-colonial-mass"],
     accent: "#7f9bc2",
-    evidence: baseRosterEvidence,
-    reviewStatus: "source-backlog",
+    evidence: reviewableEvidence,
+    reviewStatus: "needs-review",
   },
   {
     id: "swedes",
@@ -162,8 +168,8 @@ export const aoe3Civilizations: CivilizationProfile[] = [
     mistakes: ["Pelear composiciones equivocadas", "Perder War Chief", "No cerrar mapa con dano"],
     recommendedPlanIds: ["aztec-native-pressure"],
     accent: "#4f8a4f",
-    evidence: baseRosterEvidence,
-    reviewStatus: "source-backlog",
+    evidence: reviewableEvidence,
+    reviewStatus: "needs-review",
   },
   {
     id: "haudenosaunee",
@@ -177,8 +183,8 @@ export const aoe3Civilizations: CivilizationProfile[] = [
     mistakes: ["No usar aura", "Sobreextender timing", "No adaptar a caballeria/artillery"],
     recommendedPlanIds: ["haudenosaunee-timing"],
     accent: "#8a5a44",
-    evidence: baseRosterEvidence,
-    reviewStatus: "source-backlog",
+    evidence: reviewableEvidence,
+    reviewStatus: "needs-review",
   },
   {
     id: "lakota",

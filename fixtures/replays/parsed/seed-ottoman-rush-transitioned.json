@@ -1,0 +1,47 @@
+{
+  "source": "manual-json",
+  "map": "Yucatan",
+  "mode": "Supremacy 1v1",
+  "duration": "13:10",
+  "patch": "13.690",
+  "academyMeta": {
+    "fixtureKind": "synthetic-seed",
+    "purpose": "UI/coach testing; NO es replay real.",
+    "linkedPlanId": "ottoman-jan-rush",
+    "lessons": [
+      "Cuando el rush no cierra, 700 Coin a tiempo evita perder ventaja por inercia.",
+      "Atacar TC sin siege es el error clasico que regala masa."
+    ]
+  },
+  "players": [
+    {
+      "name": "Alumno",
+      "civ": "Ottomans",
+      "result": "Win",
+      "deck": ["3 Hussars", "5 Janissaries", "700 Coin", "2 Falconets"],
+      "shipments": [
+        { "time": "2:15", "card": "3 Hussars" },
+        { "time": "4:50", "card": "5 Janissaries" },
+        { "time": "7:10", "card": "700 Coin" },
+        { "time": "10:30", "card": "2 Falconets" }
+      ],
+      "ageUps": [
+        { "age": "Age II", "time": "2:50", "politician": "The Mufti" },
+        { "age": "Age III", "time": "8:40", "politician": "The Quartermaster" }
+      ]
+    },
+    {
+      "name": "Rival",
+      "civ": "Dutch",
+      "result": "Loss",
+      "shipments": [
+        { "time": "3:30", "card": "300 Wood" },
+        { "time": "6:00", "card": "4 Skirmishers" },
+        { "time": "9:15", "card": "Bank Wagon" }
+      ],
+      "ageUps": [
+        { "age": "Age II", "time": "5:00", "politician": "Burgemeester" }
+      ]
+    }
+  ]
+}

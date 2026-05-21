@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" role="img" aria-label="Spanish civilization tile">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#d8ad57"/>
+      <stop offset="100%" stop-color="#8a6e35"/>
+    </linearGradient>
+    <pattern id="p" width="24" height="24" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+      <rect width="24" height="24" fill="transparent"/>
+      <line x1="0" y1="0" x2="0" y2="24" stroke="#ffffff" stroke-width="0.4" opacity="0.18"/>
+    </pattern>
+  </defs>
+  <rect width="400" height="240" fill="url(#g)"/>
+  <rect width="400" height="240" fill="url(#p)"/>
+  <text x="32" y="56" font-family="serif" font-size="14" fill="#fbeed4" opacity="0.75" letter-spacing="4">CIV / EUROPE / INTERMEDIATE</text>
+  <text x="32" y="140" font-family="serif" font-size="72" fill="#ffffff" font-weight="600">Spanish</text>
+  <text x="32" y="178" font-family="sans-serif" font-size="16" fill="#f5deb1" opacity="0.92">SP · Shipment tempo · FF golpe</text>
+  <text x="32" y="212" font-family="sans-serif" font-size="11" fill="#dcc18a" opacity="0.75" letter-spacing="2">ACADEMIA AOE3 · seed pack</text>
+</svg>

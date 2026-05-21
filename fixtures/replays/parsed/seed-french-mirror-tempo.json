@@ -1,0 +1,50 @@
+{
+  "source": "manual-json",
+  "map": "Saguenay",
+  "mode": "Supremacy 1v1",
+  "duration": "17:42",
+  "patch": "13.690",
+  "academyMeta": {
+    "fixtureKind": "synthetic-seed",
+    "purpose": "UI/coach testing; NO es replay real.",
+    "linkedPlanId": "french-semi-ff",
+    "lessons": [
+      "En mirror French, el que llega antes a Fortress con composicion correcta gana.",
+      "Cavalry Combat antes de pelear con Cuirassiers es no negociable."
+    ]
+  },
+  "players": [
+    {
+      "name": "Alumno",
+      "civ": "French",
+      "result": "Win",
+      "deck": ["3 Coureurs des Bois", "700 Wood", "700 Coin", "Cavalry Combat", "4 Cuirassiers"],
+      "shipments": [
+        { "time": "2:00", "card": "3 Coureurs des Bois" },
+        { "time": "5:00", "card": "700 Wood" },
+        { "time": "7:30", "card": "700 Coin" },
+        { "time": "10:15", "card": "Cavalry Combat" },
+        { "time": "12:50", "card": "4 Cuirassiers" }
+      ],
+      "ageUps": [
+        { "age": "Age II", "time": "4:30", "politician": "Quartermaster" },
+        { "age": "Age III", "time": "8:50", "politician": "Exiled Prince" }
+      ]
+    },
+    {
+      "name": "Rival",
+      "civ": "French",
+      "result": "Loss",
+      "shipments": [
+        { "time": "2:10", "card": "3 Coureurs des Bois" },
+        { "time": "5:20", "card": "4 Coureurs des Bois" },
+        { "time": "7:45", "card": "700 Wood" },
+        { "time": "11:00", "card": "700 Coin" }
+      ],
+      "ageUps": [
+        { "age": "Age II", "time": "4:35", "politician": "Quartermaster" },
+        { "age": "Age III", "time": "9:50", "politician": "Exiled Prince" }
+      ]
+    }
+  ]
+}

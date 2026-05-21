@@ -1,0 +1,48 @@
+{
+  "source": "manual-json",
+  "map": "Sonora",
+  "mode": "Supremacy 1v1",
+  "duration": "15:55",
+  "patch": "13.690",
+  "academyMeta": {
+    "fixtureKind": "synthetic-seed",
+    "purpose": "UI/coach testing; NO es replay real.",
+    "linkedPlanId": "spanish-fast-fortress",
+    "lessons": [
+      "Spanish FF necesita golpe protegido: las Falconets sin Pikemen mueren a Hussar.",
+      "Pelear tesoros peligrosos con explorer rompe el tempo del plan."
+    ]
+  },
+  "players": [
+    {
+      "name": "Alumno",
+      "civ": "Spanish",
+      "result": "Win",
+      "deck": ["3 Villagers", "700 Coin", "2 Falconets", "Hand Infantry Combat"],
+      "shipments": [
+        { "time": "1:55", "card": "3 Villagers" },
+        { "time": "5:40", "card": "700 Coin" },
+        { "time": "8:50", "card": "2 Falconets" },
+        { "time": "11:30", "card": "Hand Infantry Combat" }
+      ],
+      "ageUps": [
+        { "age": "Age II", "time": "4:10", "politician": "The Naturalist" },
+        { "age": "Age III", "time": "7:30", "politician": "The Engineer" }
+      ]
+    },
+    {
+      "name": "Rival",
+      "civ": "British",
+      "result": "Loss",
+      "shipments": [
+        { "time": "2:05", "card": "3 Villagers" },
+        { "time": "4:55", "card": "700 Wood" },
+        { "time": "7:50", "card": "6 Longbowmen" },
+        { "time": "10:40", "card": "5 Villagers" }
+      ],
+      "ageUps": [
+        { "age": "Age II", "time": "4:30", "politician": "The Ambassador" }
+      ]
+    }
+  ]
+}
