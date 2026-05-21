@@ -25,10 +25,20 @@ import {
   WalletCards,
 } from "@/components/icons";
 
-export type ReviewStatus = "source-backlog" | "needs-review" | "reference-ready" | "canonical";
-export type Mode = "Supremacy 1v1" | "Team" | "Treaty";
-export type Difficulty = "Start" | "Intermediate" | "Advanced";
-export type CardAge = "Age I" | "Age II" | "Age III" | "Age IV";
+// Enums compartidos viven en src/data/aoe3/schema.ts.
+// academy.ts (legacy) los re-exporta para no duplicar la fuente de verdad.
+// PlanArchetype y GuideCategory siguen siendo locales: tienen scope distinto del canónico.
+import type {
+  CardAge as CanonicalCardAge,
+  Difficulty as CanonicalDifficulty,
+  Mode as CanonicalMode,
+  ReviewStatus as CanonicalReviewStatus,
+} from "@/data/aoe3/schema";
+
+export type ReviewStatus = CanonicalReviewStatus;
+export type Mode = CanonicalMode;
+export type Difficulty = CanonicalDifficulty;
+export type CardAge = CanonicalCardAge;
 export type PlanArchetype = "Rush" | "Semi-FF" | "Boom" | "Timing" | "Control";
 export type GuideCategory = "Fundamentos" | "Decks" | "Macro" | "Scouting" | "Mapas" | "Modos";
 

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { ArrowRight, Search, ShieldCheck } from "@/components/icons";
+import { CoachChat } from "@/components/CoachChat";
 import { coachTools, contentCitations, provenanceSummary, searchAcademyKnowledge } from "@/data/aoe3";
 
 export function AiCoachWorkbench() {
@@ -104,6 +105,8 @@ export function AiCoachWorkbench() {
             ))}
           </div>
         </article>
+
+        <CoachChat />
       </section>
     </div>
   );

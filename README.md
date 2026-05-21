@@ -45,6 +45,7 @@ Inspiracion: `/mnt/c/Users/fermi/_active/aoe/academix`, pero adaptado al dominio
 - `/cards`: cartas explicadas por uso, timing y competencia por slot.
 - `/matchups`: plan rapido civ vs civ o civ vs arquetipo.
 - `/knowledge`: busqueda interna previa al Chat IA.
+- `/modes`, `/modes/treaty`, `/modes/team`: landing diferida para modos no MVP. Treaty y Team requieren corpus propio antes de publicar guías.
 
 ## Dominio propio
 
@@ -53,6 +54,24 @@ Inspiracion: `/mnt/c/Users/fermi/_active/aoe/academix`, pero adaptado al dominio
 - treasures y trade route
 - supremacy/treaty/team games como contextos separados
 - unidades, mercenarios, natives y artillery logic
+
+## API
+
+- `GET /api/chat` — descripción del endpoint y lista de tools del Knowledge Core.
+- `POST /api/chat` — coach con tool-calling. Body: `{ messages: ChatMessage[], model?: string }`. Sin `OPENROUTER_API_KEY`, responde en modo `knowledge-only` (búsqueda directa). Con clave, usa OpenRouter (default: `moonshotai/kimi-k2`).
+- `GET /api/replay` — devuelve `seedReports` y un `sampleInput` válido.
+- `POST /api/replay` — body: `{ source?, payload }`. Normaliza JSON/texto del parser → `NormalizedReplay` + `mistakes` deterministas.
+
+Tools del coach (`src/lib/aoe3/knowledge.ts`): `list_civs`, `get_civ`, `list_plans_for_civ`, `get_plan`, `get_deck`, `get_card`, `get_opening`, `get_matchup_brief`, `search_knowledge`, `list_sources`, `list_maps`.
+
+Guardrails del coach (`src/lib/aoe3/knowledge.ts:SYSTEM_PROMPT`): cita siempre `sourceIds`, advierte cuando `reviewStatus` no sea canonical/reference-ready, no inventa timings, separa Supremacy/Team/Treaty.
+
+## Testing y CI
+
+- `npm run typecheck` — `tsc --noEmit`.
+- `npm run lint` — `next lint` (config en `.eslintrc.json`).
+- `npm test` — Vitest. Tests de integridad de datos en `src/data/aoe3/__tests__/schema.test.ts`: ids únicos, referencias civ/deck/opening/plan/card válidas, items publicados (canonical/reference-ready) con `sourceIds` no vacíos.
+- CI: `.github/workflows/ci.yml` corre install → typecheck → lint → test → build en Node 20.
 
 ## Docs
 
