@@ -1,0 +1,99 @@
+
+> academia-aoe3@0.1.0 build
+> next build
+
+   ▲ Next.js 15.5.18
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 4.1s
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/82) ...
+   Generating static pages (20/82) 
+   Generating static pages (40/82) 
+   Generating static pages (61/82) 
+ ✓ Generating static pages (82/82)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                        Size  First Load JS
+┌ ○ /                                           1.03 kB         141 kB
+├ ○ /_not-found                                   997 B         103 kB
+├ ○ /ai-coach                                   2.09 kB         143 kB
+├ ○ /analysis                                     212 B         106 kB
+├ ● /analysis/[id]                                212 B         106 kB
+├   ├ /analysis/french-semi-ff-vs-rush-review
+├   ├ /analysis/british-manor-boom-contained
+├   ├ /analysis/ottoman-rush-transition
+├   └ /analysis/postgame-template-eight-minute
+├ ○ /analyzer                                   4.15 kB         110 kB
+├ ƒ /api/chat                                     131 B         103 kB
+├ ƒ /api/replay                                   131 B         103 kB
+├ ○ /art-lab                                      195 B         106 kB
+├ ○ /cards                                        195 B         106 kB
+├ ○ /career                                     1.73 kB         142 kB
+├ ○ /civ-mastery                                   1 kB         141 kB
+├ ○ /civs                                         212 B         106 kB
+├ ○ /deck-builder                               1.43 kB         142 kB
+├ ○ /deck-checker                               1.24 kB         142 kB
+├ ○ /decks                                        212 B         106 kB
+├ ● /decks/[id]                                   212 B         106 kB
+├   ├ /decks/french-semi-ff-deck
+├   ├ /decks/british-manor-boom-deck
+├   ├ /decks/ottoman-jan-rush-deck
+├   └ [+7 more paths]
+├ ○ /errors                                     1.14 kB         142 kB
+├ ○ /guides                                       212 B         106 kB
+├ ● /guides/[id]                                  212 B         106 kB
+├   ├ /guides/empezar-aoe3-desde-aoe2
+├   ├ /guides/decks-no-son-listas
+├   ├ /guides/shipment-order-con-ramas
+├   └ [+5 more paths]
+├ ○ /icon.svg                                       0 B            0 B
+├ ○ /knowledge                                    711 B         141 kB
+├ ○ /learn                                        212 B         106 kB
+├ ● /learn/[slug]                                 212 B         106 kB
+├   ├ /learn/french-semi-ff-aoe3-de
+├   ├ /learn/ottoman-rush-guide-aoe3-de
+├   ├ /learn/aoe3-deck-checker
+├   └ [+2 more paths]
+├ ○ /maps                                       1.05 kB         142 kB
+├ ○ /matchup-scout                                 1 kB         141 kB
+├ ○ /matchups                                     212 B         106 kB
+├ ○ /modes                                        195 B         106 kB
+├ ○ /modes/team                                   195 B         106 kB
+├ ○ /modes/treaty                                 195 B         106 kB
+├ ○ /opening-timer                              2.08 kB         143 kB
+├ ○ /openings                                     212 B         106 kB
+├ ○ /parser-solution                              195 B         106 kB
+├ ○ /patch-tracker                                212 B         106 kB
+├ ● /plans/[id]                                   212 B         106 kB
+├   ├ /plans/french-semi-ff
+├   ├ /plans/british-manor-boom
+├   ├ /plans/ottoman-jan-rush
+├   └ [+7 more paths]
+├ ○ /replay-coach                               2.02 kB         142 kB
+├ ○ /replay-import                              2.96 kB         116 kB
+├ ○ /replay-lab                                   212 B         106 kB
+├ ○ /replay-upload                              2.33 kB         108 kB
+├ ○ /resources                                    195 B         106 kB
+├ ○ /roadmap                                      212 B         106 kB
+├ ○ /series-prep                                1.29 kB         142 kB
+├ ○ /shipments                                   1.3 kB         142 kB
+├ ○ /source-admin                               1.77 kB         108 kB
+├ ○ /source-provenance                            195 B         106 kB
+├ ○ /source-queue                                 212 B         106 kB
+├ ○ /stats                                        195 B         106 kB
+├ ○ /submit-replay                              2.33 kB         108 kB
+├ ○ /trust                                        195 B         106 kB
+└ ○ /vod-pipeline                               1.59 kB         107 kB
++ First Load JS shared by all                    102 kB
+  ├ chunks/1255-b28ea36bf0cdbd65.js             46.2 kB
+  ├ chunks/4bd1b696-f785427dddbba9fb.js         54.2 kB
+  └ other shared chunks (total)                    2 kB
+
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+

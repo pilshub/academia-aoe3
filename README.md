@@ -66,6 +66,13 @@ Tools del coach (`src/lib/aoe3/knowledge.ts`): `list_civs`, `get_civ`, `list_pla
 
 Guardrails del coach (`src/lib/aoe3/knowledge.ts:SYSTEM_PROMPT`): cita siempre `sourceIds`, advierte cuando `reviewStatus` no sea canonical/reference-ready, no inventa timings, separa Supremacy/Team/Treaty.
 
+## Estado (verificado local 2026-05-21)
+
+- `npm run typecheck` → OK, sin errores TS.
+- `npm test -- --run` → **9/9 tests verdes** (integridad de datos: ids únicos, refs cruzadas, sources publicados).
+- `npm run lint` → sin warnings ni errores.
+- `npm run build` → **82 rutas estáticas** prerenderizadas (era 32). Incluye 10 planes, 3 modes y los 2 endpoints API dinámicos.
+
 ## Testing y CI
 
 - `npm run typecheck` — `tsc --noEmit`.
