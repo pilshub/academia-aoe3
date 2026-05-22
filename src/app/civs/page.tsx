@@ -30,7 +30,7 @@ export default function CivsPage() {
         <section className="section">
           <div className="wrap grid">
             {aoe3Civilizations.map((civ) => (
-              <article className="card" key={civ.id}>
+              <Link className="card" key={civ.id} href={`/civs/${civ.id}`}>
                 {CIV_HERO_SVG.has(civ.id) ? (
                   <img
                     className="civ-hero"
@@ -74,16 +74,19 @@ export default function CivsPage() {
                   ))}
                 </ul>
                 <div className="actions">
-                  {civ.recommendedPlanIds.map((planId) => {
+                  <span className="button secondary">
+                    Ver detalle <ArrowRight size={16} aria-hidden="true" />
+                  </span>
+                  {civ.recommendedPlanIds.slice(0, 1).map((planId) => {
                     const plan = getPlan(planId);
                     return plan ? (
-                      <Link className="button secondary" href={`/plans/${plan.id}`} key={plan.id}>
-                        {plan.title} <ArrowRight size={16} aria-hidden="true" />
-                      </Link>
+                      <span className="pill" key={plan.id}>
+                        plan: {plan.title}
+                      </span>
                     ) : null;
                   })}
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
         </section>

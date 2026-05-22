@@ -1633,3 +1633,28 @@ h1 {
     width: 100%;
   }
 }
+
+/* Sprint 6 additions */
+
+.civ-hero {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-bottom: 1px solid var(--line);
+}
+
+/* Tables with overflow defensive */
+.card > table,
+.card-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 640px;
+}
+
+@media (max-width: 720px) {
+  .card > table,
+  .card-table {
+    font-size: 0.78rem;
+  }
+}
+

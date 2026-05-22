@@ -40,6 +40,7 @@ const navGroups = [
     label: "Aprender",
     links: [
       { href: "/guides", label: "Guias", icon: FileText },
+      { href: "/civ-guide", label: "Civ Guides", icon: Crown },
       { href: "/civs", label: "Civs", icon: Castle },
       { href: "/decks", label: "Decks", icon: WalletCards },
       { href: "/deck-checker", label: "Checker", icon: ShieldCheck },
@@ -48,7 +49,18 @@ const navGroups = [
       { href: "/maps", label: "Mapas", icon: Map },
       { href: "/cards", label: "Cartas", icon: BookOpen },
       { href: "/matchups", label: "Matchups", icon: Crosshair },
+      { href: "/reference", label: "Reference", icon: BookOpen },
       { href: "/knowledge", label: "Search", icon: Search },
+    ],
+  },
+  {
+    label: "Sim/Tools",
+    links: [
+      { href: "/counter-matrix", label: "Counters", icon: Crosshair },
+      { href: "/crate-start", label: "Crates", icon: PackageOpen },
+      { href: "/treasure-priority", label: "Treasures", icon: ShieldCheck },
+      { href: "/hotkeys", label: "Hotkeys", icon: Timer },
+      { href: "/treaty-deck-checker", label: "Treaty", icon: ShieldCheck },
     ],
   },
   {
