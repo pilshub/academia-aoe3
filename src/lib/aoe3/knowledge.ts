@@ -1,19 +1,38 @@
 import {
   aoe3Cards,
   aoe3Civilizations,
+  aoe3CivGuides,
+  aoe3CounterMatrix,
+  aoe3CrateStarts,
   aoe3Decks,
+  aoe3Hotkeys,
   aoe3Maps,
+  aoe3MapsExtra,
+  aoe3Matchups,
   aoe3Openings,
   aoe3Plans,
+  aoe3Politicians,
   aoe3Sources,
+  aoe3Techs,
+  aoe3TreasurePriorities,
+  aoe3Units,
   getCard,
   getCiv,
+  getCivGuide,
   getCivPlans,
+  getCounterRow,
+  getCrateStartForCiv,
   getDeck,
   getDeckCards,
+  getMatchupsForCiv,
   getOpening,
   getPlan,
   getPlanBundle,
+  getPoliticiansForCiv,
+  getTechsForCiv,
+  getTreasuresForCiv,
+  getUnitsForCiv,
+  getUnitsByTag,
   searchAcademyKnowledge,
   shipmentScenarios,
 } from "@/data/aoe3";
@@ -272,9 +291,10 @@ export const tools = {
   },
 
   list_maps(): ToolResult {
+    const all = [...aoe3Maps, ...aoe3MapsExtra];
     return ok(
       "map_index",
-      aoe3Maps.map((m) => ({
+      all.map((m) => ({
         id: m.id,
         name: m.name,
         type: m.type,
@@ -284,6 +304,136 @@ export const tools = {
         goodPlanTags: m.goodPlanTags,
         reviewStatus: m.reviewStatus,
       })),
+    );
+  },
+
+  list_politicians(args: { civId?: string }): ToolResult {
+    const list = args.civId ? getPoliticiansForCiv(args.civId) : aoe3Politicians;
+    return ok(
+      "politician_index",
+      list.map((p) => ({
+        id: p.id,
+        name: p.name,
+        civId: p.civId,
+        ageUpTo: p.ageUpTo,
+        bonuses: p.bonuses,
+        bestFor: p.bestFor,
+        notes: p.notes,
+        reviewStatus: p.reviewStatus,
+      })),
+    );
+  },
+
+  list_units(args: { civId?: string; tag?: string }): ToolResult {
+    let list = aoe3Units;
+    if (args.civId) list = list.filter((u) => u.civId === args.civId || u.civId === "shared");
+    if (args.tag) list = list.filter((u) => u.tags.includes(args.tag as never));
+    return ok(
+      "unit_index",
+      list.map((u) => ({
+        id: u.id,
+        name: u.name,
+        civId: u.civId,
+        tags: u.tags,
+        primaryRole: u.primaryRole,
+        countersWell: u.countersWell,
+        weakAgainst: u.weakAgainst,
+        ageAvailable: u.ageAvailable,
+        reviewStatus: u.reviewStatus,
+      })),
+    );
+  },
+
+  list_techs(args: { civId?: string }): ToolResult {
+    const list = args.civId ? getTechsForCiv(args.civId) : aoe3Techs;
+    return ok(
+      "tech_index",
+      list.map((t) => ({
+        id: t.id,
+        name: t.name,
+        civId: t.civId,
+        category: t.category,
+        ageRequired: t.ageRequired,
+        affects: t.affects,
+        description: t.description,
+        reviewStatus: t.reviewStatus,
+      })),
+    );
+  },
+
+  get_civ_guide(args: { civId: string }): ToolResult {
+    const guide = getCivGuide(args.civId);
+    if (!guide) return fail(`No hay guía editorial para "${args.civId}".`);
+    return ok("civ_guide", {
+      ...guide,
+      reviewBadge: reviewBadge(guide.reviewStatus),
+    });
+  },
+
+  get_crate_start(args: { civId: string }): ToolResult {
+    const start = getCrateStartForCiv(args.civId);
+    if (!start) return fail(`No hay crate-start helper para "${args.civId}".`);
+    return ok("crate_start", start);
+  },
+
+  get_treasure_priority(args: { civId: string }): ToolResult {
+    const treasures = getTreasuresForCiv(args.civId);
+    if (treasures.length === 0) return fail(`No hay treasure priority para "${args.civId}".`);
+    return ok("treasure_priority", treasures);
+  },
+
+  get_counter(args: { unitTag: string }): ToolResult {
+    const row = getCounterRow(args.unitTag);
+    if (!row) return fail(`No hay counter row para tag "${args.unitTag}".`);
+    return ok("counter_row", row);
+  },
+
+  list_hotkeys(args: { category?: string }): ToolResult {
+    const list = args.category
+      ? aoe3Hotkeys.filter((h) => h.category === args.category)
+      : aoe3Hotkeys;
+    return ok(
+      "hotkey_index",
+      list.map((h) => ({
+        id: h.id,
+        action: h.action,
+        category: h.category,
+        defaultBinding: h.defaultBinding,
+        whyItMatters: h.whyItMatters,
+        drill: h.drill,
+      })),
+    );
+  },
+
+  analyze_replay_summary(args: { replayJson: string }): ToolResult {
+    try {
+      const raw = JSON.parse(args.replayJson) as Record<string, unknown>;
+      const players = Array.isArray(raw.players) ? raw.players.length : 0;
+      const map = typeof raw.map === "string" ? raw.map : null;
+      const duration = typeof raw.duration === "string" ? raw.duration : null;
+      const shipments = Array.isArray(raw.players)
+        ? (raw.players as Array<{ shipments?: unknown[] }>).reduce(
+            (sum, p) => sum + (Array.isArray(p.shipments) ? p.shipments.length : 0),
+            0,
+          )
+        : 0;
+      return ok("replay_summary", {
+        players,
+        map,
+        duration,
+        totalShipments: shipments,
+        hint:
+          "Para análisis completo usa POST /api/replay con el mismo payload; este tool solo da overview rápido.",
+      });
+    } catch {
+      return fail("JSON no parseable. Usa el shape de replayImportSample.");
+    }
+  },
+
+  lookup_player(_args: { profile?: string }): ToolResult {
+    return fail(
+      "Player lookup requiere AOE3 Explorer adapter (item 11-13 del roadmap). No hay corpus interno con perfiles.",
+      { hint: "Consulta https://aoe3explorer.com/ manualmente o espera al adapter." },
     );
   },
 } as const;
@@ -383,6 +533,102 @@ export const TOOL_SCHEMAS = [
     name: "list_maps",
     description: "Lista los mapas con tradeRoute, water, natives y goodPlanTags.",
     parameters: { type: "object", properties: {}, required: [] },
+  },
+  {
+    name: "list_politicians",
+    description: "Lista los políticos disponibles (opcionalmente filtrados por civId). Incluye bonuses y age-up target.",
+    parameters: {
+      type: "object",
+      properties: { civId: { type: "string", description: "id de la civilización (opcional)" } },
+      required: [],
+    },
+  },
+  {
+    name: "list_units",
+    description:
+      "Lista unidades con sus tags, primaryRole, countersWell y weakAgainst. Filtros opcionales por civ y tag.",
+    parameters: {
+      type: "object",
+      properties: {
+        civId: { type: "string" },
+        tag: { type: "string", description: "ej infantry, cavalry, artillery, mercenary" },
+      },
+      required: [],
+    },
+  },
+  {
+    name: "list_techs",
+    description: "Lista techs/upgrades de Arsenal, Market, Church y específicos de civ.",
+    parameters: {
+      type: "object",
+      properties: { civId: { type: "string" } },
+      required: [],
+    },
+  },
+  {
+    name: "get_civ_guide",
+    description: "Devuelve la guía editorial completa de una civilización: tesis, start-here, errores y drills.",
+    parameters: {
+      type: "object",
+      properties: { civId: { type: "string" } },
+      required: ["civId"],
+    },
+  },
+  {
+    name: "get_crate_start",
+    description: "Devuelve el orden de aldeanos y primer movimiento para los crates iniciales de una civilización.",
+    parameters: {
+      type: "object",
+      properties: { civId: { type: "string" } },
+      required: ["civId"],
+    },
+  },
+  {
+    name: "get_treasure_priority",
+    description: "Qué tesoros pelear primero y qué saltar para esa civilización (incluye reglas shared).",
+    parameters: {
+      type: "object",
+      properties: { civId: { type: "string" } },
+      required: ["civId"],
+    },
+  },
+  {
+    name: "get_counter",
+    description: "Devuelve la fila del counter matrix v0 para un tipo de unidad (ej ranged-infantry).",
+    parameters: {
+      type: "object",
+      properties: { unitTag: { type: "string" } },
+      required: ["unitTag"],
+    },
+  },
+  {
+    name: "list_hotkeys",
+    description: "Lista atajos de teclado AoE3 (filtrables por categoría: tc, production, explorer, etc).",
+    parameters: {
+      type: "object",
+      properties: { category: { type: "string" } },
+      required: [],
+    },
+  },
+  {
+    name: "analyze_replay_summary",
+    description:
+      "Acepta un JSON con shape de replayImportSample y devuelve overview: jugadores, mapa, duración, shipments totales. Para análisis completo usar /api/replay.",
+    parameters: {
+      type: "object",
+      properties: { replayJson: { type: "string" } },
+      required: ["replayJson"],
+    },
+  },
+  {
+    name: "lookup_player",
+    description:
+      "Player profile lookup. Bloqueado hasta que haya AOE3 Explorer adapter. Devuelve error explicativo si se invoca.",
+    parameters: {
+      type: "object",
+      properties: { profile: { type: "string" } },
+      required: [],
+    },
   },
 ] as const;
 

@@ -3,8 +3,18 @@ import { aoe3Civilizations } from "./civs";
 import { aoe3Decks, aoe3Openings, aoe3Plans } from "./decks";
 import { evidenceLabel, resolveEvidenceSources } from "./evidence";
 import { aoe3Maps } from "./maps";
+import { aoe3MapsExtra } from "./mapsExtra";
 import { aoe3Matchups, getMatchupsForCiv, getMatchupsByArchetype } from "./matchups";
+import { aoe3Politicians, getPoliticiansForCiv } from "./politicians";
+import { aoe3Techs, getTechsForCiv } from "./techs";
+import { aoe3Units, getUnitsForCiv, getUnitsByTag } from "./units";
+import { aoe3CivGuides, getCivGuide } from "./civGuides";
+import { aoe3CounterMatrix, getCounterRow } from "./counterMatrix";
+import { aoe3CrateStarts, getCrateStartForCiv } from "./crateStarts";
+import { aoe3Hotkeys, getHotkeysByCategory, hotkeyCategories } from "./hotkeys";
+import { aoe3TreasurePriorities, getTreasuresForCiv } from "./treasures";
 import { artPipeline } from "./artPipeline";
+import { academyExecutionCadence, academyOperatingGoal, academyQualityGates, academyTracks } from "./academyOS";
 import { replayPipeline } from "./replayPipeline";
 import { replayFieldMatrix, replayImportSample, replaySeedReports } from "./replaySamples";
 import { parserSolutions, parserSolutionSummary, replayFixturePlan } from "./parserSolutions";
@@ -20,6 +30,7 @@ import { assetBriefs, careerTracks, coachTools, errorLibrary, replayCoachTemplat
 import type { Deck, Plan, ShipmentCard } from "./schema";
 
 export * from "./schema";
+export * from "./academyOS";
 export * from "./evidence";
 export * from "./matchups";
 export * from "./artPipeline";
@@ -38,12 +49,35 @@ export {
   aoe3Civilizations,
   aoe3Decks,
   aoe3Maps,
+  aoe3MapsExtra,
   aoe3Matchups,
   aoe3Openings,
   aoe3Plans,
+  aoe3Politicians,
   aoe3Sources,
+  aoe3Techs,
+  aoe3Units,
+  aoe3CivGuides,
+  aoe3CounterMatrix,
+  aoe3CrateStarts,
+  aoe3Hotkeys,
+  aoe3TreasurePriorities,
+  getCivGuide,
+  getCounterRow,
+  getCrateStartForCiv,
+  getHotkeysByCategory,
+  hotkeyCategories,
+  getTreasuresForCiv,
+  academyExecutionCadence,
+  academyOperatingGoal,
+  academyQualityGates,
+  academyTracks,
   getMatchupsForCiv,
   getMatchupsByArchetype,
+  getPoliticiansForCiv,
+  getTechsForCiv,
+  getUnitsForCiv,
+  getUnitsByTag,
   artPipeline,
   contentCitations,
   evidenceLabel,
@@ -96,8 +130,10 @@ export function getOpening(id: string) {
 }
 
 export function getMapProfile(id: string) {
-  return aoe3Maps.find((map) => map.id === id);
+  return aoe3Maps.find((map) => map.id === id) ?? aoe3MapsExtra.find((map) => map.id === id);
 }
+
+export const allMaps = [...aoe3Maps, ...aoe3MapsExtra];
 
 export function getCardsForCiv(civId: string) {
   return aoe3Cards.filter((card) => card.civId === civId);

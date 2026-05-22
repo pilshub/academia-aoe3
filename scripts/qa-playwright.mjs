@@ -7,6 +7,7 @@ const outDir = path.resolve("qa-artifacts");
 
 const routes = [
   "/",
+  "/academy-os",
   "/career",
   "/civ-mastery",
   "/opening-timer",
@@ -307,7 +308,7 @@ async function run() {
     deviceScaleFactor: 2,
   });
   const mobilePage = await mobile.newPage();
-  for (const route of ["/", "/career", "/civ-mastery", "/opening-timer", "/replay-coach", "/deck-builder", "/matchup-scout", "/errors", "/ai-coach", "/trust", "/replay-upload", "/submit-replay", "/patch-tracker", "/source-admin", "/vod-pipeline", "/series-prep", "/learn", "/learn/french-semi-ff-aoe3-de", "/guides", "/analysis", "/analyzer", "/resources", "/source-provenance", "/source-queue", "/roadmap", "/stats", "/replay-lab", "/replay-import", "/parser-solution", "/art-lab", "/plans/french-semi-ff", "/decks", "/deck-checker", "/shipments", "/maps", "/cards", "/knowledge"]) {
+  for (const route of ["/", "/academy-os", "/career", "/civ-mastery", "/opening-timer", "/replay-coach", "/deck-builder", "/matchup-scout", "/errors", "/ai-coach", "/trust", "/replay-upload", "/submit-replay", "/patch-tracker", "/source-admin", "/vod-pipeline", "/series-prep", "/learn", "/learn/french-semi-ff-aoe3-de", "/guides", "/analysis", "/analyzer", "/resources", "/source-provenance", "/source-queue", "/roadmap", "/stats", "/replay-lab", "/replay-import", "/parser-solution", "/art-lab", "/plans/french-semi-ff", "/decks", "/deck-checker", "/shipments", "/maps", "/cards", "/knowledge"]) {
     await visitAndCheck(mobilePage, route, "mobile");
   }
   await mobilePage.goto(`${baseUrl}/plans/french-semi-ff`, { waitUntil: "networkidle" });

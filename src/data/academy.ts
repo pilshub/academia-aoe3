@@ -705,6 +705,13 @@ export const matchups: MatchupGuide[] = [
 
 export const features: Feature[] = [
   {
+    title: "Academy OS",
+    body: "Goal 100/10 operativo: frentes, gates, fuentes P0, cadencia y siguiente slice de ejecucion.",
+    href: "/academy-os",
+    icon: ListTree,
+    signal: "goal activo",
+  },
+  {
     title: "Modo Carrera",
     body: "Dashboard personal con objetivo, civ main, nivel, plan semanal y rutas de practica.",
     href: "/career",

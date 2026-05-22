@@ -8,6 +8,7 @@ const navGroups = [
       { href: "/", label: "Inicio", icon: Home },
       { href: "/learn", label: "Learn", icon: Search },
       { href: "/modes", label: "Modos", icon: Swords },
+      { href: "/academy-os", label: "OS", icon: ListTree },
       { href: "/roadmap", label: "100", icon: TrendingUp },
     ],
   },

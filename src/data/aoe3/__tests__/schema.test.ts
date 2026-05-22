@@ -3,10 +3,15 @@ import {
   aoe3Cards,
   aoe3Civilizations,
   aoe3Decks,
+  aoe3Maps,
+  aoe3MapsExtra,
   aoe3Matchups,
   aoe3Openings,
   aoe3Plans,
+  aoe3Politicians,
   aoe3Sources,
+  aoe3Techs,
+  aoe3Units,
 } from "../index";
 import type { ReviewStatus } from "../schema";
 
@@ -109,5 +114,34 @@ describe("data integrity", () => {
     // map must exist so we notice if all civs accidentally drop to source-backlog.
     const published = (counts["canonical"] ?? 0) + (counts["reference-ready"] ?? 0) + (counts["needs-review"] ?? 0);
     expect(published).toBeGreaterThan(0);
+  });
+
+  it("aoe3Politicians ids are unique and civId resolves to a known civ or 'shared'", () => {
+    const civIds = new Set(aoe3Civilizations.map((c) => c.id));
+    const ids = aoe3Politicians.map((p) => p.id);
+    expect(new Set(ids).size, "aoe3Politicians has duplicate ids").toBe(ids.length);
+    for (const politician of aoe3Politicians) {
+      const valid = politician.civId === "shared" || civIds.has(politician.civId);
+      expect(valid, `politician ${politician.id} -> unknown civId '${politician.civId}'`).toBe(true);
+    }
+  });
+
+  it("aoe3Units ids are unique", () => {
+    const ids = aoe3Units.map((u) => u.id);
+    expect(new Set(ids).size, "aoe3Units has duplicate ids").toBe(ids.length);
+  });
+
+  it("aoe3Techs ids are unique", () => {
+    const ids = aoe3Techs.map((t) => t.id);
+    expect(new Set(ids).size, "aoe3Techs has duplicate ids").toBe(ids.length);
+  });
+
+  it("aoe3MapsExtra ids are unique and do not collide with aoe3Maps", () => {
+    const extraIds = aoe3MapsExtra.map((m) => m.id);
+    expect(new Set(extraIds).size, "aoe3MapsExtra has duplicate ids").toBe(extraIds.length);
+    const baseIds = new Set(aoe3Maps.map((m) => m.id));
+    for (const id of extraIds) {
+      expect(baseIds.has(id), `aoe3MapsExtra id '${id}' collides with aoe3Maps`).toBe(false);
+    }
   });
 });

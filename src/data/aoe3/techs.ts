@@ -1,0 +1,298 @@
+import type { ReviewStatus, EvidenceRef } from "./schema";
+
+export type TechCategory = "arsenal" | "church" | "market" | "natives" | "mercenaries" | "civic" | "wonder" | "consulate";
+
+export type Tech = {
+  id: string;
+  name: string;
+  civId: string; // o "shared"
+  category: TechCategory;
+  ageRequired: "Age I" | "Age II" | "Age III" | "Age IV";
+  affects: string[]; // ej ["infantry", "villager-gather"]
+  description: string;
+  sourceId: string;
+  evidence?: EvidenceRef;
+  reviewStatus: ReviewStatus;
+};
+
+export const aoe3Techs: Tech[] = [
+  // ── Arsenal – shared European ─────────────────────────────────────────────
+  {
+    id: "tech-counter-infantry-rifling",
+    name: "Counter Infantry Rifling",
+    civId: "shared",
+    category: "arsenal",
+    ageRequired: "Age III",
+    affects: ["ranged-infantry", "skirmisher"],
+    description: "Increases the ranged attack of skirmisher-type units against heavy infantry.",
+    sourceId: "samurai-strategy-school",
+    reviewStatus: "needs-review",
+  },
+  {
+    id: "tech-pillage",
+    name: "Pillage",
+    civId: "shared",
+    category: "arsenal",
+    ageRequired: "Age II",
+    affects: ["infantry", "cavalry"],
+    description: "Military units deal extra damage to buildings, enabling faster raiding.",
+    sourceId: "samurai-strategy-school",
+    reviewStatus: "needs-review",
+  },
+  {
+    id: "tech-bayonet",
+    name: "Bayonet",
+    civId: "shared",
+    category: "arsenal",
+    ageRequired: "Age II",
+    affects: ["heavy-infantry", "musketeer"],
+    description: "Increases the melee attack of musketeers and similar heavy infantry.",
+    sourceId: "samurai-strategy-school",
+    reviewStatus: "needs-review",
+  },
+  {
+    id: "tech-trample-mode",
+    name: "Trample Mode",
+    civId: "shared",
+    category: "arsenal",
+    ageRequired: "Age III",
+    affects: ["heavy-cavalry"],
+    description: "Allows heavy cavalry to deal area splash damage at reduced movement speed.",
+    sourceId: "samurai-strategy-school",
+    reviewStatus: "needs-review",
+  },
+  {
+    id: "tech-heated-shot",
+    name: "Heated Shot",
+    civId: "shared",
+    category: "arsenal",
+    ageRequired: "Age III",
+    affects: ["artillery", "ship"],
+    description: "Artillery and warships deal extra damage to buildings and ships.",
+    sourceId: "samurai-strategy-school",
+    reviewStatus: "needs-review",
+  },
+  {
+    id: "tech-socket-bayonet",
+    name: "Socket Bayonet",
+    civId: "shared",
+    category: "arsenal",
+    ageRequired: "Age III",
+    affects: ["heavy-infantry"],
+    description: "Reduces the reload penalty when musketeers switch from ranged to melee combat.",
+    sourceId: "samurai-strategy-school",
+    reviewStatus: "needs-review",
+  },
+  // ── Market – gather upgrades ───────────────────────────────────────────────
+  {
+    id: "tech-steel-traps",
+    name: "Steel Traps",
+    civId: "shared",
+    category: "market",
+    ageRequired: "Age II",
+    affects: ["villager-gather", "hunt"],
+    description: "Villagers gather food from hunted animals faster.",
+    sourceId: "samurai-strategy-school",
+    reviewStatus: "needs-review",
+  },
+  {
+    id: "tech-gang-saw",
+    name: "Gang Saw",
+    civId: "shared",
+    category: "market",
+    ageRequired: "Age II",
+    affects: ["villager-gather", "wood"],
+    description: "Villagers gather wood faster.",
+    sourceId: "samurai-strategy-school",
+    reviewStatus: "needs-review",
+  },
+  {
+    id: "tech-placer-mines",
+    name: "Placer Mines",
+    civId: "shared",
+    category: "market",
+    ageRequired: "Age II",
+    affects: ["villager-gather", "coin"],
+    description: "Villagers gather coin from mines faster.",
+    sourceId: "samurai-strategy-school",
+    reviewStatus: "needs-review",
+  },
+  {
+    id: "tech-hunting-dogs",
+    name: "Hunting Dogs",
+    civId: "shared",
+    category: "market",
+    ageRequired: "Age I",
+    affects: ["villager-gather", "hunt"],
+    description: "Villagers move faster while hunting.",
+    sourceId: "samurai-strategy-school",
+    reviewStatus: "needs-review",
+  },
+  {
+    id: "tech-log-flume",
+    name: "Log Flume",
+    civId: "shared",
+    category: "market",
+    ageRequired: "Age III",
+    affects: ["villager-gather", "wood"],
+    description: "Further increases wood gather rate for villagers.",
+    sourceId: "samurai-strategy-school",
+    reviewStatus: "needs-review",
+  },
+  {
+    id: "tech-amalgamation",
+    name: "Amalgamation",
+    civId: "shared",
+    category: "market",
+    ageRequired: "Age III",
+    affects: ["villager-gather", "coin"],
+    description: "Further increases coin gather rate from mines.",
+    sourceId: "samurai-strategy-school",
+    reviewStatus: "needs-review",
+  },
+  // ── Church – shared European ──────────────────────────────────────────────
+  {
+    id: "tech-papal-blessing",
+    name: "Papal Blessing",
+    civId: "shared",
+    category: "church",
+    ageRequired: "Age II",
+    affects: ["all-units"],
+    description: "Units heal slowly over time.",
+    sourceId: "samurai-strategy-school",
+    reviewStatus: "needs-review",
+  },
+  {
+    id: "tech-coats-of-arms",
+    name: "Coats of Arms",
+    civId: "shared",
+    category: "church",
+    ageRequired: "Age II",
+    affects: ["heavy-cavalry"],
+    description: "Increases hit points of heavy cavalry.",
+    sourceId: "samurai-strategy-school",
+    reviewStatus: "needs-review",
+  },
+  {
+    id: "tech-herbal-medicine",
+    name: "Herbal Medicine",
+    civId: "shared",
+    category: "church",
+    ageRequired: "Age III",
+    affects: ["all-units"],
+    description: "Increases the healing speed of field hospitals and monks.",
+    sourceId: "samurai-strategy-school",
+    reviewStatus: "needs-review",
+  },
+  // ── British ───────────────────────────────────────────────────────────────
+  {
+    id: "tech-royal-decree",
+    name: "Royal Decree",
+    civId: "british",
+    category: "church",
+    ageRequired: "Age II",
+    affects: ["villager-train"],
+    description: "British church upgrade that reduces manor house training time.",
+    sourceId: "samurai-strategy-school",
+    reviewStatus: "needs-review",
+  },
+  // ── Ottomans ──────────────────────────────────────────────────────────────
+  {
+    id: "tech-fast-travel",
+    name: "Fast Travel",
+    civId: "ottomans",
+    category: "civic",
+    ageRequired: "Age II",
+    affects: ["villager-spawn"],
+    description: "Ottoman mosque upgrade that further increases free villager spawn rate.",
+    sourceId: "samurai-strategy-school",
+    reviewStatus: "needs-review",
+  },
+  {
+    id: "tech-military-drummers",
+    name: "Military Drummers",
+    civId: "ottomans",
+    category: "arsenal",
+    ageRequired: "Age III",
+    affects: ["infantry", "cavalry"],
+    description: "Increases the movement speed of Ottoman military units.",
+    sourceId: "samurai-strategy-school",
+    reviewStatus: "needs-review",
+  },
+  // ── French ────────────────────────────────────────────────────────────────
+  {
+    id: "tech-cadets",
+    name: "Cadets",
+    civId: "french",
+    category: "church",
+    ageRequired: "Age II",
+    affects: ["infantry-train"],
+    description: "French church upgrade that reduces infantry training time.",
+    sourceId: "samurai-strategy-school",
+    reviewStatus: "needs-review",
+  },
+  // ── Germans ───────────────────────────────────────────────────────────────
+  {
+    id: "tech-landsknecht-training",
+    name: "Landsknecht Training",
+    civId: "germans",
+    category: "arsenal",
+    ageRequired: "Age III",
+    affects: ["heavy-infantry", "doppelsoldner"],
+    description: "Increases the attack of German Doppelsoldners.",
+    sourceId: "samurai-strategy-school",
+    reviewStatus: "needs-review",
+  },
+  // ── Dutch ─────────────────────────────────────────────────────────────────
+  {
+    id: "tech-monopoly",
+    name: "Monopoly",
+    civId: "dutch",
+    category: "civic",
+    ageRequired: "Age III",
+    affects: ["bank", "coin-income"],
+    description: "Dutch civic upgrade that increases coin output of banks.",
+    sourceId: "samurai-strategy-school",
+    reviewStatus: "needs-review",
+  },
+  // ── Russians ──────────────────────────────────────────────────────────────
+  {
+    id: "tech-cossack-hetmanate",
+    name: "Cossack Hetmanate",
+    civId: "russians",
+    category: "arsenal",
+    ageRequired: "Age III",
+    affects: ["cavalry", "cossack"],
+    description: "Increases the hit points of Russian Cossacks.",
+    sourceId: "samurai-strategy-school",
+    reviewStatus: "needs-review",
+  },
+  // ── Aztecs ────────────────────────────────────────────────────────────────
+  {
+    id: "tech-flower-wars",
+    name: "Flower Wars",
+    civId: "aztecs",
+    category: "civic",
+    ageRequired: "Age III",
+    affects: ["infantry", "warrior-priests"],
+    description: "Aztec warrior priests grant XP and buffs when units are sacrificed or captured.",
+    sourceId: "samurai-strategy-school",
+    reviewStatus: "needs-review",
+  },
+  // ── Haudenosaunee ─────────────────────────────────────────────────────────
+  {
+    id: "tech-lacrosse",
+    name: "Lacrosse",
+    civId: "haudenosaunee",
+    category: "civic",
+    ageRequired: "Age II",
+    affects: ["warrior", "speed"],
+    description: "Increases the movement speed of Haudenosaunee warriors.",
+    sourceId: "samurai-strategy-school",
+    reviewStatus: "needs-review",
+  },
+];
+
+export function getTechsForCiv(civId: string): Tech[] {
+  return aoe3Techs.filter((t) => t.civId === civId || t.civId === "shared");
+}
