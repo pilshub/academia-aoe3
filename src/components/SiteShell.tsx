@@ -118,8 +118,14 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
       {children}
       <footer className="footer">
         <div className="wrap">
-          <span>Academia AoE3 - MVP editorial auditado.</span>
-          <span>Imagenes remotas oficiales solo como referencia visual; asset pack propio pendiente.</span>
+          <span>Academia AoE3 — editorial AoE3:DE con corpus auditable.</span>
+          <span>
+            Iconos oficiales © Microsoft/Xbox, hospedados por{" "}
+            <a href="https://aoe3explorer.com" target="_blank" rel="noreferrer">
+              aoe3explorer.com
+            </a>{" "}
+            (referencia comunitaria, sin redistribuir).
+          </span>
         </div>
       </footer>
     </div>

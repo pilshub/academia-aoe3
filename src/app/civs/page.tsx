@@ -4,9 +4,10 @@ import { EvidencePanel } from "@/components/EvidencePanel";
 import { PageHero } from "@/components/PageHero";
 import { SiteShell } from "@/components/SiteShell";
 import { aoe3Civilizations, getPlan } from "@/data/aoe3";
+import { civFlagUrl } from "@/lib/aoe3/aoe3explorer-assets";
 
-// Civs con SVG en public/assets/generated/civ-{id}.svg.
-// Las demás caen al fallback de civ-band con accent color.
+// Civs con SVG seed en public/assets/generated/civ-{id}.svg como fallback
+// si aoe3explorer.com no tiene la flag oficial.
 const CIV_HERO_SVG = new Set([
   "french",
   "british",
@@ -29,13 +30,36 @@ export default function CivsPage() {
         />
         <section className="section">
           <div className="wrap grid">
-            {aoe3Civilizations.map((civ) => (
+            {aoe3Civilizations.map((civ) => {
+              const officialFlag = civFlagUrl(civ.id);
+              const fallbackSvg = CIV_HERO_SVG.has(civ.id) ? `/assets/generated/civ-${civ.id}.svg` : null;
+              return (
               <Link className="card" key={civ.id} href={`/civs/${civ.id}`}>
-                {CIV_HERO_SVG.has(civ.id) ? (
+                {officialFlag ? (
+                  <div
+                    style={{
+                      width: "100%",
+                      aspectRatio: "5 / 3",
+                      background: `linear-gradient(135deg, ${civ.accent}33, rgba(17,17,15,0.4))`,
+                      display: "grid",
+                      placeItems: "center",
+                      borderRadius: "8px 8px 0 0",
+                      borderBottom: "1px solid var(--line)",
+                    }}
+                  >
+                    <img
+                      className="civ-hero"
+                      src={officialFlag}
+                      alt={`${civ.name} flag oficial`}
+                      loading="lazy"
+                      style={{ maxWidth: "60%", maxHeight: "80%", objectFit: "contain" }}
+                    />
+                  </div>
+                ) : fallbackSvg ? (
                   <img
                     className="civ-hero"
-                    src={`/assets/generated/civ-${civ.id}.svg`}
-                    alt={`${civ.name} hero tile`}
+                    src={fallbackSvg}
+                    alt={`${civ.name} hero tile (seed)`}
                     width={400}
                     height={240}
                     loading="lazy"
@@ -87,7 +111,8 @@ export default function CivsPage() {
                   })}
                 </div>
               </Link>
-            ))}
+              );
+            })}
           </div>
         </section>
       </main>

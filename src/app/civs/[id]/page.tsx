@@ -27,6 +27,7 @@ import {
 import { getCivGuide } from "@/data/aoe3/civGuides";
 import { getCrateStartForCiv } from "@/data/aoe3/crateStarts";
 import { getTreasuresForCiv } from "@/data/aoe3/treasures";
+import { civFlagUrl } from "@/lib/aoe3/aoe3explorer-assets";
 
 const CIV_HERO_SVG = new Set([
   "french",
@@ -67,6 +68,7 @@ export default async function CivDetailPage({ params }: { params: Promise<{ id: 
   const techs = getTechsForCiv(id).filter((t) => t.civId === id);
   const cards = getCardsForCiv(id);
   const matchups = getMatchupsForCiv(id);
+  const officialFlag = civFlagUrl(id);
   const hasSvg = CIV_HERO_SVG.has(id);
 
   return (
@@ -82,10 +84,27 @@ export default async function CivDetailPage({ params }: { params: Promise<{ id: 
           <div className="wrap">
             <div className="grid two">
               <article className="card" style={{ padding: 0, overflow: "hidden" }}>
-                {hasSvg ? (
+                {officialFlag ? (
+                  <div
+                    style={{
+                      width: "100%",
+                      aspectRatio: "5 / 3",
+                      background: `linear-gradient(135deg, ${civ.accent}44, rgba(17,17,15,0.5))`,
+                      display: "grid",
+                      placeItems: "center",
+                    }}
+                  >
+                    <img
+                      src={officialFlag}
+                      alt={`${civ.name} flag oficial`}
+                      loading="lazy"
+                      style={{ maxWidth: "60%", maxHeight: "80%", objectFit: "contain" }}
+                    />
+                  </div>
+                ) : hasSvg ? (
                   <img
                     src={`/assets/generated/civ-${civ.id}.svg`}
-                    alt={`${civ.name} hero tile`}
+                    alt={`${civ.name} hero tile (seed)`}
                     width={400}
                     height={240}
                     loading="lazy"

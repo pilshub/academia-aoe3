@@ -20,6 +20,7 @@ import {
   roadmapSummary,
 } from "@/data/aoe3";
 import { aoe3CivGuides } from "@/data/aoe3/civGuides";
+import { civFlagUrl } from "@/lib/aoe3/aoe3explorer-assets";
 
 const HERO_CIVS = ["french", "british", "ottomans", "spanish"] as const;
 
@@ -119,16 +120,36 @@ export default function HomePage() {
               {HERO_CIVS.map((civId) => {
                 const civ = aoe3Civilizations.find((c) => c.id === civId);
                 if (!civ) return null;
+                const officialFlag = civFlagUrl(civ.id);
                 return (
                   <Link className="card" key={civ.id} href={`/civs/${civ.id}`} style={{ padding: 0 }}>
-                    <img
-                      src={`/assets/generated/civ-${civ.id}.svg`}
-                      alt={`${civ.name} hero`}
-                      width={400}
-                      height={240}
-                      loading="lazy"
-                      style={{ width: "100%", height: "auto", display: "block" }}
-                    />
+                    {officialFlag ? (
+                      <div
+                        style={{
+                          width: "100%",
+                          aspectRatio: "5 / 3",
+                          background: `linear-gradient(135deg, ${civ.accent}55, rgba(17,17,15,0.55))`,
+                          display: "grid",
+                          placeItems: "center",
+                        }}
+                      >
+                        <img
+                          src={officialFlag}
+                          alt={`${civ.name} flag oficial`}
+                          loading="lazy"
+                          style={{ maxWidth: "55%", maxHeight: "80%", objectFit: "contain" }}
+                        />
+                      </div>
+                    ) : (
+                      <img
+                        src={`/assets/generated/civ-${civ.id}.svg`}
+                        alt={`${civ.name} hero (seed)`}
+                        width={400}
+                        height={240}
+                        loading="lazy"
+                        style={{ width: "100%", height: "auto", display: "block" }}
+                      />
+                    )}
                     <div style={{ padding: "1rem 1.25rem" }}>
                       <h3>{civ.name}</h3>
                       <p>{civ.identity}</p>
