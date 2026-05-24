@@ -1,0 +1,1809 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Academia AoE3 — Decks, shipments y timings con intención</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Source+Sans+3:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<script src="data-aoe3.js"></script>
+<script src="image-slot.js"></script>
+
+<style>
+/* ============================================================
+   ACADEMIA AoE3 · LANDING
+   Paleta madera + marrón + dorado, fiel a globals.css del repo
+   pero virada a tonos más cálidos y con textura de madera.
+   ============================================================ */
+:root{
+  /* Wood + brown surfaces */
+  --coal:       #140c06;
+  --bark:       #1d1208;
+  --bark-2:     #261810;
+  --panel:      #2b1d11;
+  --panel-2:    #34251a;
+  --plank:      #3b2918;
+  --plank-hi:   #4a3320;
+  --ember:      #6b3a14;
+
+  /* Parchment ink */
+  --ink:        #f5e9cf;
+  --ink-soft:   #ead8b3;
+  --muted:      #c7b48a;
+  --dim:        #95805c;
+  --faint:      #6e5c40;
+
+  /* Accents */
+  --gold:       #d8ad57;
+  --gold-hi:    #f1cf88;
+  --gold-deep:  #8d6212;
+  --brass:      #b88a36;
+  --red:        #bc4b34;
+  --burgundy:   #7a2515;
+  --teal:       #2a9d8f;
+  --green:      #7a9f54;
+  --blue:       #477db3;
+
+  --line:       rgba(245, 233, 207, 0.12);
+  --line-2:     rgba(245, 233, 207, 0.22);
+  --line-gold:  rgba(216, 173, 87, 0.36);
+
+  --shadow:     0 24px 80px rgba(0,0,0,0.45);
+  --shadow-sm:  0 8px 24px rgba(0,0,0,0.4);
+  --inset-gold: inset 0 0 0 1px rgba(216,173,87,0.18);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--coal)}
+body{
+  min-height:100vh;color:var(--ink);
+  font-family:'Source Sans 3',Georgia,serif;font-size:16px;line-height:1.55;
+  /* layered wood background */
+  background:
+    radial-gradient(circle at 14% 6%, rgba(216,173,87,.10), transparent 38%),
+    radial-gradient(circle at 88% 14%, rgba(122,37,21,.14), transparent 42%),
+    radial-gradient(circle at 30% 95%, rgba(216,173,87,.06), transparent 40%),
+    linear-gradient(180deg, #160d07 0%, #110a05 100%);
+  background-attachment: fixed;
+}
+
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit;color:inherit}
+
+h1,h2,h3,h4{font-family:'Cinzel',serif;font-weight:700;letter-spacing:.005em;line-height:1.08}
+
+/* ===== Wood texture util (subtle grain) ===== */
+.wood{
+  position:relative;
+  background:
+    linear-gradient(180deg, var(--panel) 0%, var(--bark-2) 100%);
+}
+.wood::before{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;mix-blend-mode:overlay;
+  background:
+    repeating-linear-gradient(90deg,
+      rgba(255,220,170,.04) 0 2px,
+      transparent 2px 7px,
+      rgba(0,0,0,.10) 7px 8px,
+      transparent 8px 26px),
+    repeating-linear-gradient(90deg,
+      rgba(0,0,0,.06) 0 1px, transparent 1px 13px);
+}
+.wood::after{
+  /* Knot whorls */
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.35;
+  background:
+    radial-gradient(ellipse 14px 38px at 22% 30%, rgba(0,0,0,.4), transparent 70%),
+    radial-gradient(ellipse 10px 28px at 71% 78%, rgba(0,0,0,.35), transparent 70%);
+}
+
+/* ===== Wrap ===== */
+.wrap{width:min(1240px, calc(100% - 40px));margin:0 auto}
+
+/* ===== NAV ===== */
+.nav{
+  position:sticky;top:0;z-index:30;
+  border-bottom:1px solid rgba(216,173,87,.28);
+  background:
+    linear-gradient(180deg, rgba(20,12,6,.95), rgba(15,9,5,.92));
+  backdrop-filter:blur(14px);
+  box-shadow:0 8px 30px rgba(0,0,0,.55), inset 0 -1px 0 rgba(216,173,87,.08);
+}
+.nav-inner{
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  width:min(1320px, calc(100% - 32px));margin:0 auto;padding:14px 0;
+}
+.brand{display:flex;align-items:center;gap:14px;min-width:200px}
+.brand-mark{
+  display:grid;place-items:center;width:44px;height:44px;flex:0 0 auto;
+  border:1px solid rgba(216,173,87,.55);
+  background:
+    radial-gradient(circle at 30% 30%, rgba(216,173,87,.45), transparent 60%),
+    linear-gradient(145deg, rgba(216,173,87,.28), rgba(188,75,52,.22));
+  color:var(--gold-hi);
+  box-shadow:inset 0 0 0 1px rgba(245,233,207,.08), 0 2px 6px rgba(0,0,0,.5);
+}
+.brand-title{
+  display:block;font-family:'Cinzel',serif;font-size:1.05rem;font-weight:700;color:var(--ink);
+  letter-spacing:.01em;
+}
+.brand-subtitle{
+  display:block;color:var(--dim);font-size:.72rem;font-weight:800;text-transform:uppercase;
+  letter-spacing:.16em;margin-top:2px;
+}
+.nav-links{display:flex;align-items:stretch;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.nav-group{
+  display:grid;gap:4px;padding:4px 8px;
+  border-left:1px solid rgba(245,233,207,.08);
+}
+.nav-group-label{
+  color:var(--dim);font-size:.62rem;font-weight:900;text-transform:uppercase;letter-spacing:.22em;
+}
+.nav-group-links{display:flex;flex-wrap:wrap;gap:4px}
+.nav-group-links a{
+  display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:6px 8px;
+  border:1px solid transparent;color:var(--muted);font-size:.82rem;font-weight:700;
+  transition:.15s ease;
+}
+.nav-group-links a:hover{
+  border-color:var(--line-2);background:rgba(245,233,207,.05);color:var(--ink);
+}
+.nav-group-links a svg{flex:0 0 auto;opacity:.9}
+
+/* ===== HERO ===== */
+.hero{
+  position:relative;
+  min-height:calc(100vh - 78px);
+  display:grid;align-items:center;overflow:hidden;
+  border-bottom:1px solid var(--line);
+}
+.hero-bg{position:absolute;inset:0;overflow:hidden}
+.hero-painting{position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 70% 55% at 64% 60%, rgba(248,196,108,.55) 0%, rgba(248,196,108,0) 60%),
+    radial-gradient(ellipse 50% 40% at 64% 60%, rgba(255,228,168,.55) 0%, rgba(255,228,168,0) 55%),
+    linear-gradient(180deg, #1d1024 0%, #432016 30%, #7a3416 55%, #b46426 76%, #d18a3a 92%);
+}
+.hero-bg svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hero-bg::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(90deg, rgba(20,12,6,.86), rgba(20,12,6,.50) 38%, rgba(20,12,6,.22) 58%, rgba(20,12,6,.58)),
+    linear-gradient(180deg, rgba(20,12,6,.30) 0%, transparent 20%, transparent 65%, rgba(20,12,6,.95) 100%);
+}
+.hero-content{
+  position:relative;z-index:1;
+  width:min(1240px, calc(100% - 40px));margin:0 auto;
+  display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:42px;
+  padding:80px 0 110px;
+}
+
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid rgba(216,173,87,.42);
+  background:linear-gradient(180deg, rgba(216,173,87,.14), rgba(216,173,87,.06));
+  color:var(--gold-hi);
+  padding:8px 12px;font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.18em;
+  box-shadow:var(--inset-gold);
+}
+
+h1{
+  max-width:880px;margin:18px 0 18px;
+  font-size:clamp(2.4rem, 5vw, 4.6rem);line-height:1.04;
+  color:var(--ink);font-weight:700;letter-spacing:-0.005em;
+}
+h1 em{
+  font-style:normal;color:var(--gold-hi);
+}
+
+.lead{
+  max-width:640px;color:var(--ink-soft);
+  font-size:clamp(1.04rem, 1.4vw, 1.22rem);line-height:1.6;font-weight:400;
+}
+
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px;align-items:center}
+.button{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:46px;
+  border:1px solid var(--gold);
+  background:var(--gold);
+  color:#1b1408;padding:11px 22px;font-weight:700;letter-spacing:.02em;
+  font-family:'Cinzel',serif;font-size:.92rem;
+  box-shadow:0 6px 14px rgba(0,0,0,.35);
+  text-shadow:none;
+  transition:.15s ease;
+}
+.button:hover{background:var(--gold-hi);border-color:var(--gold-hi);transform:translateY(-1px)}
+.button.secondary{
+  background:transparent;color:var(--ink);border-color:var(--line-gold);
+  box-shadow:none;
+}
+.button.secondary:hover{background:rgba(216,173,87,.08);border-color:var(--gold);color:var(--gold-hi)}
+
+/* Hero side panel */
+.hero-panel{
+  align-self:end;position:relative;
+  border:1px solid var(--line-gold);
+  background:
+    linear-gradient(180deg, rgba(43,29,17,.92), rgba(29,18,8,.92));
+  box-shadow:var(--shadow);
+}
+/* brass corner caps */
+.hero-panel::before,
+.hero-panel::after{
+  content:"";position:absolute;width:18px;height:18px;
+  background:
+    radial-gradient(circle at 50% 50%, var(--gold-hi) 0%, var(--brass) 40%, var(--gold-deep) 80%, transparent 82%);
+  filter:drop-shadow(0 0 4px rgba(0,0,0,.6));
+}
+.hero-panel::before{top:-7px;left:-7px}
+.hero-panel::after{bottom:-7px;right:-7px}
+
+.hero-panel-head{
+  padding:14px 18px;
+  border-bottom:1px solid var(--gold-deep);
+  background:
+    linear-gradient(180deg, rgba(255,210,140,.16) 0%, rgba(255,210,140,.02) 30%, rgba(0,0,0,.32) 100%),
+    linear-gradient(180deg, #6e1818 0%, #4a0d0d 60%, #2a0606 100%);
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:'Cinzel',serif;font-weight:700;font-size:.82rem;
+  letter-spacing:.22em;color:var(--gold-hi);
+  font-variant-caps:all-small-caps;
+  text-shadow:0 1px 0 rgba(0,0,0,.6);
+  box-shadow:inset 0 1px 0 rgba(255,230,180,.32), inset 0 -1px 0 rgba(0,0,0,.45);
+}
+.hero-panel-body{padding:14px}
+.signal-list{display:grid;gap:10px;list-style:none}
+.signal-list li{
+  display:grid;grid-template-columns:30px minmax(0,1fr);gap:12px;align-items:start;
+  padding:12px 14px;background:rgba(245,233,207,.05);
+  border-left:3px solid var(--gold);
+}
+.signal-list .icn{
+  display:grid;place-items:center;width:30px;height:30px;
+  border:1px solid var(--line-gold);color:var(--gold-hi);
+  background:rgba(216,173,87,.10);
+}
+.signal-list strong{
+  display:block;color:var(--ink);font-family:'Cinzel',serif;font-weight:700;
+  font-size:.96rem;margin-bottom:2px;
+}
+.signal-list span{color:var(--muted);font-size:.88rem;line-height:1.5}
+
+/* ===== SECTION shell ===== */
+.section{
+  position:relative;padding:84px 0;border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg, transparent, rgba(0,0,0,.18));
+}
+.section.tight{padding:48px 0}
+.section.wood-band{
+  background:
+    linear-gradient(180deg, rgba(43,29,17,.78), rgba(29,18,8,.85));
+}
+.section.wood-band::before{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.6;mix-blend-mode:overlay;
+  background:
+    repeating-linear-gradient(90deg,
+      rgba(255,220,170,.03) 0 2px, transparent 2px 6px,
+      rgba(0,0,0,.07) 6px 7px, transparent 7px 22px);
+}
+.section.wood-band::after{
+  content:"";position:absolute;left:0;right:0;top:0;height:2px;
+  background:linear-gradient(90deg, transparent, var(--brass), transparent);
+}
+
+.section-heading{
+  display:flex;align-items:flex-end;justify-content:space-between;gap:24px;
+  margin-bottom:28px;
+}
+.section-heading .col{max-width:760px}
+.section-heading h2{
+  font-size:clamp(2rem, 4vw, 3.6rem);line-height:1.08;color:var(--ink);
+}
+.section-heading h2 em{
+  font-style:normal;color:var(--gold-hi);
+}
+.section-heading p{
+  max-width:580px;margin:0;color:var(--muted);line-height:1.55;font-size:1.02rem;
+}
+.section-kicker{
+  display:inline-flex;align-items:center;gap:14px;
+  font-family:'Cinzel',serif;font-weight:600;font-size:.78rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:14px;
+}
+.section-kicker .num{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:5px 12px;border-radius:2px;
+  border:1px solid var(--gold-deep);
+  color:var(--gold-hi);
+  background:
+    linear-gradient(180deg, rgba(255,210,140,.18) 0%, rgba(255,210,140,.02) 30%, rgba(0,0,0,.30) 100%),
+    linear-gradient(180deg, #6e1818 0%, #4a0d0d 60%, #2a0606 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,230,180,.32),
+    inset 0 -1px 0 rgba(0,0,0,.45),
+    0 2px 6px rgba(0,0,0,.4);
+  font-family:'Cinzel',serif;font-size:.78rem;font-weight:700;
+  letter-spacing:.10em;
+  text-shadow:0 1px 0 rgba(0,0,0,.5);
+}
+
+/* ===== PLAN SELECTOR ===== */
+.plan-selector{
+  border:1px solid var(--line-gold);
+  background:
+    linear-gradient(180deg, rgba(43,29,17,.55), rgba(29,18,8,.55));
+  padding:22px;position:relative;
+  box-shadow:var(--shadow-sm);
+}
+
+.selector-controls{
+  display:grid;grid-template-columns:1fr 200px;gap:12px;margin-bottom:18px;
+}
+.selector-controls label{display:grid;gap:8px}
+.selector-controls .pill{
+  display:inline-flex;align-items:center;gap:8px;
+  color:var(--gold-hi);font-size:.78rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
+}
+.selector-controls input,
+.selector-controls select{
+  width:100%;min-height:46px;
+  border:1px solid var(--line-gold);
+  background:linear-gradient(180deg, rgba(20,12,6,.85), rgba(15,9,5,.85));
+  color:var(--ink);padding:10px 14px;outline:none;font-size:.98rem;
+  box-shadow:inset 0 2px 6px rgba(0,0,0,.5);
+}
+.selector-controls input:focus,
+.selector-controls select:focus{
+  border-color:rgba(216,173,87,.72);
+  box-shadow:inset 0 2px 6px rgba(0,0,0,.5), 0 0 0 3px rgba(216,173,87,.18);
+}
+
+/* ===== CARDS GRID ===== */
+.grid{display:grid;grid-template-columns:repeat(3, minmax(0,1fr));gap:16px}
+.grid.two{grid-template-columns:repeat(2, minmax(0,1fr))}
+.grid.four{grid-template-columns:repeat(4, minmax(0,1fr))}
+
+.card{
+  position:relative;display:flex;flex-direction:column;gap:10px;
+  border:1px solid var(--line);
+  background:
+    linear-gradient(180deg, rgba(43,29,17,.62), rgba(29,18,8,.5));
+  padding:18px 18px 20px;min-height:100%;overflow:hidden;
+  transition:.2s ease;text-align:left;
+}
+.card::before{
+  content:"";position:absolute;inset:0 0 auto;height:1px;
+  background:var(--line-gold);
+  opacity:.6;
+}
+.card:hover{
+  border-color:rgba(216,173,87,.42);
+  background:
+    linear-gradient(180deg, rgba(58,40,24,.78), rgba(36,24,14,.62));
+  transform:translateY(-2px);
+  box-shadow:0 14px 28px rgba(0,0,0,.45), inset 0 0 0 1px rgba(216,173,87,.10);
+}
+.card-top{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+}
+.icon-tile{
+  display:grid;place-items:center;flex:0 0 auto;width:44px;height:44px;
+  border:1px solid var(--line-gold);color:var(--gold-hi);
+  background:
+    radial-gradient(circle at 30% 30%, rgba(216,173,87,.22), rgba(216,173,87,.05));
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.4);
+}
+.status{
+  display:inline-flex;align-items:center;gap:6px;min-height:26px;
+  border:1px solid var(--gold-deep);border-radius:2px;
+  background:
+    linear-gradient(180deg, rgba(255,210,140,.18) 0%, rgba(255,210,140,.02) 30%, rgba(0,0,0,.30) 100%),
+    linear-gradient(180deg, #6e1818 0%, #4a0d0d 60%, #2a0606 100%);
+  color:var(--gold-hi);
+  box-shadow:
+    inset 0 1px 0 rgba(255,230,180,.30),
+    inset 0 -1px 0 rgba(0,0,0,.42),
+    0 2px 4px rgba(0,0,0,.4);
+  text-shadow:0 1px 0 rgba(0,0,0,.5);
+  padding:4px 10px;font-size:.74rem;font-weight:700;letter-spacing:.10em;
+  font-variant-caps:all-small-caps;text-transform:none;
+  font-family:'Cinzel',serif;
+}
+.card h3{margin:6px 0 4px;font-size:1.24rem;color:var(--ink)}
+.card p{color:var(--muted);line-height:1.5;font-size:.95rem;flex:1}
+.meta-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.pill{
+  display:inline-flex;align-items:center;gap:6px;min-height:26px;
+  border:1px solid var(--line);background:rgba(245,233,207,.05);
+  color:var(--muted);padding:3px 8px;font-size:.78rem;font-weight:700;
+}
+
+/* ===== LIST ===== */
+.list{display:grid;gap:9px;list-style:none}
+.list li{
+  padding:13px 14px;border:1px solid var(--line);
+  background:rgba(0,0,0,.18);color:var(--ink-soft);line-height:1.5;
+  display:flex;align-items:flex-start;gap:10px;
+}
+.list li .icn{
+  flex:0 0 auto;color:var(--gold-hi);margin-top:2px;
+}
+.list li span.note{display:block;color:var(--dim);font-size:.86rem;margin-top:4px}
+.list li a{color:var(--ink);font-weight:700;display:inline-flex;align-items:center;gap:6px}
+.list li a:hover{color:var(--gold-hi)}
+
+/* ===== FOOTER ===== */
+.footer{padding:42px 0;color:var(--dim);background:rgba(0,0,0,.35);border-top:1px solid var(--line)}
+.footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+.footer .brand-mini{display:flex;align-items:center;gap:10px;color:var(--muted)}
+
+/* ===== SCREEN-READER ===== */
+.sr{position:absolute;left:-9999px}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1100px){
+  .hero-content{grid-template-columns:1fr;padding:64px 0 80px}
+  .hero-panel{align-self:auto;max-width:520px}
+  .grid{grid-template-columns:repeat(2, minmax(0,1fr))}
+  .grid.four{grid-template-columns:repeat(2, minmax(0,1fr))}
+}
+@media (max-width: 720px){
+  .nav-inner{flex-direction:column;align-items:flex-start}
+  .section-heading{flex-direction:column;align-items:flex-start}
+  .selector-controls{grid-template-columns:1fr}
+  .grid, .grid.two, .grid.four{grid-template-columns:1fr}
+}
+
+/* ===== entry animations ===== */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.hero-content > *{animation:fadeUp .7s ease both}
+.hero-content > *:nth-child(2){animation-delay:.15s}
+@media (prefers-reduced-motion: reduce){
+  *{animation:none !important;transition:none !important}
+}
+
+/* ============================================================
+   NEW TOP BAR + COMPACT NAV
+   ============================================================ */
+.topbar{
+  position:relative;z-index:31;
+  border-bottom:1px solid rgba(216,173,87,.18);
+  background:linear-gradient(180deg, rgba(10,6,3,.96), rgba(8,5,3,.96));
+  font-family:'Cinzel',serif;
+}
+.topbar-inner{
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+  width:min(1320px,calc(100% - 32px));margin:0 auto;padding:8px 0;
+}
+.brand-mini{display:flex;align-items:center;gap:10px;color:var(--gold-hi);text-decoration:none}
+.brand-mini-mark{
+  display:grid;place-items:center;width:26px;height:26px;
+  border:1px solid var(--gold-deep);color:var(--gold-hi);font-family:'Cinzel',serif;
+  font-weight:700;font-size:.78rem;
+  background:radial-gradient(circle at 30% 30%, rgba(216,173,87,.35), transparent 60%);
+}
+.brand-mini-text{font-size:.78rem;font-weight:700;letter-spacing:.20em;font-variant-caps:all-small-caps}
+
+.topbar-stats{display:flex;align-items:center;gap:22px;flex:1;justify-content:center;flex-wrap:wrap}
+.topbar-stats div{display:flex;align-items:baseline;gap:6px}
+.topbar-stats dt{font-size:.62rem;font-weight:700;color:var(--muted);letter-spacing:.16em;text-transform:uppercase}
+.topbar-stats dd{margin:0;font-family:'Cinzel',serif;font-size:.95rem;font-weight:700;color:var(--ink);line-height:1}
+.topbar-stats dd span{color:var(--dim);font-size:.7rem;font-weight:500;margin-left:1px}
+
+.patch-pill{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 14px;border-radius:2px;
+  border:1px solid var(--gold-deep);color:var(--gold-hi);text-decoration:none;
+  background-image:
+    repeating-linear-gradient(90deg, rgba(0,0,0,.10) 0 1px, transparent 1px 6px),
+    linear-gradient(180deg, rgba(255,210,140,.18) 0%, rgba(255,210,140,.02) 30%, rgba(0,0,0,.30) 100%),
+    linear-gradient(180deg, #6e1818 0%, #4a0d0d 60%, #2a0606 100%);
+  box-shadow:inset 0 1px 0 rgba(255,230,180,.32), inset 0 -1px 0 rgba(0,0,0,.45), 0 2px 4px rgba(0,0,0,.4);
+  text-shadow:0 1px 0 rgba(0,0,0,.5);
+  font-family:'Cinzel',serif;font-size:.7rem;font-weight:700;letter-spacing:.14em;
+  font-variant-caps:all-small-caps;
+}
+.patch-pill .dot{width:6px;height:6px;border-radius:50%;background:#f1cf88;box-shadow:0 0 6px #f1cf88}
+.patch-pill:hover{filter:brightness(1.12)}
+
+.nav-primary{display:flex;align-items:center;gap:4px;flex:1;justify-content:center}
+.nav-primary a, .nav-more{
+  display:inline-flex;align-items:center;gap:6px;padding:9px 14px;
+  color:var(--ink-soft);text-decoration:none;cursor:pointer;background:transparent;
+  border:1px solid transparent;
+  font-family:'Cinzel',serif;font-size:.84rem;font-weight:600;letter-spacing:.12em;
+  font-variant-caps:all-small-caps;
+  transition:.15s ease;
+}
+.nav-primary a:hover, .nav-more:hover{color:var(--gold-hi);background:rgba(216,173,87,.08);border-color:rgba(216,173,87,.22)}
+.nav-more svg{transition:transform .15s}
+.nav-more[aria-expanded="true"] svg{transform:rotate(180deg)}
+
+.nav-drawer{
+  position:absolute;left:0;right:0;top:100%;
+  background:linear-gradient(180deg, rgba(20,12,6,.98), rgba(15,9,5,.98));
+  border-bottom:1px solid var(--gold-deep);
+  box-shadow:0 16px 40px rgba(0,0,0,.6);
+  z-index:5;
+}
+.nav-drawer-inner{
+  width:min(1320px,calc(100% - 32px));margin:0 auto;padding:24px 0;
+  display:grid;grid-template-columns:repeat(5,1fr);gap:18px;
+}
+.nav-drawer-group{display:flex;flex-direction:column;gap:6px}
+.nav-drawer-group .label{
+  color:var(--gold);font-family:'Cinzel',serif;font-size:.7rem;font-weight:700;
+  letter-spacing:.24em;text-transform:uppercase;
+  padding-bottom:8px;border-bottom:1px solid rgba(216,173,87,.18);margin-bottom:4px;
+}
+.nav-drawer-group a{
+  display:flex;align-items:center;gap:8px;padding:5px 6px;
+  color:var(--ink-soft);text-decoration:none;font-size:.84rem;font-weight:500;
+  border-radius:2px;transition:.12s;
+}
+.nav-drawer-group a:hover{background:rgba(216,173,87,.08);color:var(--gold-hi)}
+.nav-drawer-group a svg{opacity:.6;flex:0 0 auto}
+
+.nav-links{display:none !important}
+
+@media (max-width: 900px){
+  .topbar-stats{display:none}
+  .nav-primary a{padding:9px 8px;font-size:.78rem}
+  .nav-drawer-inner{grid-template-columns:repeat(2,1fr)}
+}
+
+/* ============================================================
+   DECISION ASSISTANT (red feature panel) + STRIP (minimap/log)
+   ============================================================ */
+.da-panel{
+  position:relative;
+  border:1px solid var(--gold-deep);
+  background:
+    linear-gradient(180deg, rgba(255,210,140,.10) 0%, rgba(255,210,140,.02) 30%, rgba(0,0,0,.40) 100%),
+    linear-gradient(180deg, #5a1414 0%, #3a0a0a 50%, #220404 100%);
+  box-shadow:inset 0 1px 0 rgba(255,230,180,.32), inset 0 -2px 0 rgba(0,0,0,.45), 0 12px 28px rgba(0,0,0,.5);
+  overflow:hidden;
+}
+.da-panel::before,.da-panel::after{
+  content:"";position:absolute;width:10px;height:10px;border-radius:50%;
+  background:radial-gradient(circle at 30% 30%, #e8c275, #5a3e10 80%);
+  box-shadow:inset 0 -1px 0 rgba(0,0,0,.5), 0 1px 2px rgba(0,0,0,.5);
+}
+.da-panel::before{top:12px;left:12px}
+.da-panel::after{top:12px;right:12px}
+.da-head{
+  display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;
+  padding:18px 56px;
+  border-bottom:1px solid rgba(216,173,87,.28);
+  background:linear-gradient(180deg, rgba(0,0,0,.20), transparent);
+}
+.da-emblem{
+  display:grid;place-items:center;width:38px;height:38px;
+  border:1px solid var(--gold-deep);color:var(--gold-hi);
+  background:radial-gradient(circle at 30% 30%, rgba(216,173,87,.30), rgba(0,0,0,.4));
+}
+.da-title{font-family:'Cinzel',serif;font-weight:700;font-size:1.05rem;color:var(--gold-hi);letter-spacing:.16em;font-variant-caps:all-small-caps;text-shadow:0 1px 0 rgba(0,0,0,.6)}
+.da-sub{color:var(--ink-soft);font-size:.92rem;font-style:italic;margin-top:2px}
+.da-status{font-family:'Cinzel',serif;font-size:.7rem;color:var(--gold-hi);letter-spacing:.18em;
+  border:1px solid var(--gold-deep);padding:4px 10px;background:rgba(0,0,0,.3);font-variant-caps:all-small-caps}
+
+.da-body{
+  display:grid;grid-template-columns:340px 1fr;gap:0;
+  border-top:1px solid rgba(216,173,87,.18);
+}
+.da-form{
+  padding:20px 22px;background:rgba(0,0,0,.30);
+  display:grid;gap:12px;border-right:1px solid rgba(216,173,87,.18);
+}
+.da-form label{display:grid;gap:6px}
+.da-form span{font-family:'Cinzel',serif;font-size:.74rem;color:var(--gold-hi);letter-spacing:.18em;
+  font-variant-caps:all-small-caps}
+.da-form select{
+  width:100%;min-height:42px;padding:9px 12px;
+  border:1px solid var(--gold-deep);
+  background:linear-gradient(180deg, rgba(20,12,6,.8), rgba(15,9,5,.8));
+  color:var(--ink);outline:none;font-family:'Source Sans 3',serif;font-size:.95rem;
+  box-shadow:inset 0 2px 6px rgba(0,0,0,.55);
+}
+.da-output{
+  padding:20px 24px;display:grid;gap:14px;
+}
+.da-output h4{font-family:'Cinzel',serif;font-size:.74rem;color:var(--gold);letter-spacing:.18em;
+  text-transform:uppercase;margin-bottom:6px;font-variant-caps:all-small-caps}
+.da-output .out-row{display:grid;grid-template-columns:120px 1fr;gap:14px;align-items:start;
+  padding:8px 0;border-bottom:1px dashed rgba(216,173,87,.18)}
+.da-output .out-row:last-child{border-bottom:0}
+.da-output .out-label{font-family:'Cinzel',serif;font-size:.78rem;color:var(--gold-hi);letter-spacing:.14em;
+  font-variant-caps:all-small-caps}
+.da-output .out-val{color:var(--ink-soft);font-size:.96rem;line-height:1.5}
+.da-output .out-val b{color:var(--ink);font-family:'Cinzel',serif;font-weight:700}
+
+/* ===== BOTTOM STRIP (minimap + asset slot + log) ===== */
+.strip{
+  position:relative;padding:42px 0 56px;
+  background:linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.55));
+  border-top:1px solid var(--line);
+}
+.strip-inner{display:grid;grid-template-columns:280px 1fr 320px;gap:20px}
+.mini, .slot, .log{
+  position:relative;border:1px solid var(--line-gold);
+  background:linear-gradient(180deg, rgba(43,29,17,.7), rgba(29,18,8,.6));
+  box-shadow:0 8px 22px rgba(0,0,0,.5);
+  padding:14px;
+}
+.mini-head, .slot-tag, .log-head > span:first-child{
+  font-family:'Cinzel',serif;font-size:.72rem;color:var(--gold-hi);letter-spacing:.22em;
+  font-variant-caps:all-small-caps;text-transform:uppercase;
+  display:block;margin-bottom:10px;
+}
+.mini-canvas{
+  border:1px solid var(--gold-deep);background:#06100a;height:160px;overflow:hidden;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.4);
+}
+.mini-canvas svg{width:100%;height:100%;display:block}
+
+.slot-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.slot-mini{font-family:'Cinzel',serif;font-size:.66rem;color:var(--dim);letter-spacing:.22em;text-transform:uppercase}
+.slot-tag{margin-bottom:0}
+.slot-body{display:grid;grid-template-columns:110px 1fr;gap:18px;align-items:center}
+.slot-art{
+  display:grid;place-items:center;
+  border:1px dashed rgba(216,173,87,.32);background:radial-gradient(circle at 50% 35%, rgba(216,173,87,.18), rgba(0,0,0,.3));
+  aspect-ratio:1;color:var(--gold-hi);
+}
+.slot-text strong{font-family:'Cinzel',serif;color:var(--ink);font-weight:700;display:block;margin-bottom:6px}
+.slot-text p{color:var(--muted);font-size:.92rem;line-height:1.5;margin-bottom:10px}
+.slot-cta{display:inline-flex;align-items:center;gap:6px;
+  padding:6px 12px;border-radius:2px;
+  border:1px solid var(--gold-deep);color:var(--gold-hi);text-decoration:none;
+  background-image:
+    repeating-linear-gradient(90deg, rgba(0,0,0,.10) 0 1px, transparent 1px 6px),
+    linear-gradient(180deg, rgba(255,210,140,.18) 0%, rgba(255,210,140,.02) 30%, rgba(0,0,0,.30) 100%),
+    linear-gradient(180deg, #6e1818 0%, #4a0d0d 60%, #2a0606 100%);
+  box-shadow:inset 0 1px 0 rgba(255,230,180,.32), inset 0 -1px 0 rgba(0,0,0,.45), 0 2px 4px rgba(0,0,0,.4);
+  text-shadow:0 1px 0 rgba(0,0,0,.5);
+  font-family:'Cinzel',serif;font-size:.74rem;font-weight:700;letter-spacing:.14em;font-variant-caps:all-small-caps;
+}
+.slot-cta:hover{filter:brightness(1.12)}
+
+.log-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.log-meta{font-family:'Cinzel',serif;font-size:.66rem;color:var(--dim);letter-spacing:.22em;text-transform:uppercase}
+.log-list{list-style:none;display:grid;gap:6px}
+.log-list li{padding:7px 10px;background:rgba(0,0,0,.30);border-left:2px solid var(--gold);font-size:.86rem;color:var(--ink-soft);line-height:1.45}
+.log-list li .t{font-family:'JetBrains Mono', monospace;color:var(--dim);font-size:.7rem;letter-spacing:.06em;margin-right:8px}
+.log-list li span:not(.t){color:var(--gold-hi);font-weight:600;margin-right:6px}
+
+@media (max-width: 1100px){
+  .da-body{grid-template-columns:1fr}
+  .strip-inner{grid-template-columns:1fr}
+}
+
+/* ===== Hero image-slot layer ===== */
+.hero-image-slot{
+  position:absolute !important;inset:0;
+  width:100% !important;height:100% !important;
+  display:block;z-index:1;
+  background:transparent !important;
+  border:0 !important;
+}
+.hero-bg::after{z-index:2}
+.hero-bg svg{z-index:0}
+
+/* ============================================================
+   RICH FOOTER (3-column nav + base strip)
+   ============================================================ */
+.footer{
+  padding:54px 0 32px;background:linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.85));
+  border-top:1px solid var(--gold-deep);
+}
+.footer::before{
+  content:"";display:block;height:2px;width:100%;
+  background:linear-gradient(90deg, transparent, var(--brass) 30%, var(--brass) 70%, transparent);
+  opacity:.5;margin-top:-54px;margin-bottom:48px;
+}
+.footer-grid{
+  display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1fr;gap:32px;margin-bottom:40px;
+}
+.footer-col h4{
+  font-family:'Cinzel',serif;font-size:.74rem;font-weight:700;color:var(--gold-hi);
+  letter-spacing:.24em;text-transform:uppercase;margin-bottom:14px;
+  padding-bottom:8px;border-bottom:1px solid rgba(216,173,87,.18);
+  font-variant-caps:all-small-caps;
+}
+.footer-col ul{list-style:none;display:grid;gap:6px}
+.footer-col li a{
+  display:inline-flex;align-items:center;gap:6px;
+  color:var(--muted);font-size:.88rem;text-decoration:none;
+  font-family:'Source Sans 3',serif;transition:.15s;
+}
+.footer-col li a:hover{color:var(--gold-hi)}
+.footer-col.lead-col{padding-right:14px}
+.footer-col.lead-col p{color:var(--muted);font-size:.94rem;line-height:1.55;margin-top:8px}
+.footer-col.lead-col .seal{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:8px 14px;border:1px solid var(--gold-deep);
+  background:rgba(216,173,87,.08);color:var(--gold-hi);
+  font-family:'Cinzel',serif;font-size:.78rem;letter-spacing:.18em;font-variant-caps:all-small-caps;
+  margin-bottom:14px;
+}
+.footer-col.lead-col .seal .dot{width:6px;height:6px;border-radius:50%;background:var(--gold-hi);box-shadow:0 0 6px var(--gold-hi)}
+.footer-base{
+  display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;
+  padding-top:24px;border-top:1px solid rgba(216,173,87,.12);
+  color:var(--dim);font-size:.84rem;
+}
+.footer-base .brand-mini{color:var(--ink-soft)}
+.footer-base .footer-tagline{color:var(--ink-soft);font-style:italic}
+.footer-base .footer-credit{color:var(--dim);font-size:.78rem}
+
+@media (max-width: 1100px){
+  .footer-grid{grid-template-columns:repeat(3,1fr)}
+  .footer-col.lead-col{grid-column:1 / -1}
+}
+@media (max-width: 720px){
+  .footer-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+/* Plan selector featured row */
+.plan-featured{
+  display:grid;grid-template-columns:auto 1fr auto;gap:22px;align-items:center;
+  padding:18px 22px;margin-bottom:18px;
+  border:1px solid var(--gold-deep);
+  background:
+    linear-gradient(180deg, rgba(255,210,140,.06) 0%, rgba(0,0,0,.20) 100%),
+    linear-gradient(180deg, rgba(58,40,24,.85), rgba(36,24,14,.85));
+  box-shadow:inset 0 1px 0 rgba(255,230,180,.18), 0 6px 18px rgba(0,0,0,.4);
+}
+.plan-featured .crest-sm{
+  display:grid;place-items:center;width:54px;height:54px;
+  border:1px solid rgba(245,233,207,.4);color:#fff;font-family:'Cinzel',serif;
+  font-weight:800;font-size:1.1rem;
+  background:linear-gradient(135deg, var(--accent,#2f7dd1), rgba(0,0,0,.5));
+  box-shadow:0 8px 18px rgba(0,0,0,.5);
+}
+.plan-featured .info .label{
+  font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);
+  font-variant-caps:all-small-caps;margin-bottom:4px;display:block;
+}
+.plan-featured .info .title{font-family:'Cinzel',serif;font-size:1.2rem;font-weight:700;color:var(--ink);margin-bottom:4px}
+.plan-featured .info .desc{color:var(--muted);font-size:.94rem;line-height:1.5}
+.plan-featured .open-btn{
+  display:inline-flex;align-items:center;gap:8px;padding:10px 18px;
+  border:1px solid var(--gold);background:var(--gold);color:#1b1408;
+  font-family:'Cinzel',serif;font-weight:700;font-size:.84rem;letter-spacing:.06em;text-decoration:none;
+  box-shadow:inset 0 1px 0 rgba(255,239,196,.55),0 4px 0 #5a3a0e,0 6px 14px rgba(0,0,0,.45);
+  text-shadow:0 1px 0 rgba(255,240,200,.35);transition:.15s;
+}
+.plan-featured .open-btn:hover{background:var(--gold-hi);transform:translateY(-1px)}
+
+/* ============================================================
+   AoE2-DE INSPIRED POLISH — stripes, rivets, engraved title, divider
+   ============================================================ */
+
+/* Vertical fabric stripes on every burgundy surface */
+.hero-panel-head,
+.section-kicker .num,
+.status,
+.tag,
+.diff{
+  background-image:
+    repeating-linear-gradient(90deg, rgba(0,0,0,.10) 0 1px, transparent 1px 6px),
+    linear-gradient(180deg, rgba(255,210,140,.18) 0%, rgba(255,210,140,.02) 30%, rgba(0,0,0,.30) 100%),
+    linear-gradient(180deg, #6e1818 0%, #4a0d0d 60%, #2a0606 100%);
+}
+/* Rivets on hero-panel-head */
+.hero-panel-head{position:relative}
+.hero-panel-head::before,
+.hero-panel-head::after{
+  content:"";position:absolute;top:50%;width:8px;height:8px;border-radius:50%;
+  transform:translateY(-50%);
+  background:radial-gradient(circle at 30% 30%, #e8c275, #5a3e10 80%);
+  box-shadow:inset 0 -1px 0 rgba(0,0,0,.5), 0 1px 2px rgba(0,0,0,.5);
+}
+.hero-panel-head::before{left:10px}
+.hero-panel-head::after{right:10px}
+
+/* Engraved title — stacked shadow giving 3D chiseled stone feel */
+h1{
+  font-family:'Cinzel',serif;font-weight:800;
+  text-shadow:
+    0 1px 0 #5a3a0e,
+    0 2px 0 #3a2305,
+    0 3px 0 #1a0f06,
+    0 6px 14px rgba(0,0,0,.6);
+}
+h1 em{
+  text-shadow:
+    0 1px 0 #5a3a0e,
+    0 2px 0 #3a2305,
+    0 3px 0 #1a0f06,
+    0 0 18px rgba(241,207,136,.25);
+}
+
+/* CTA gold button — chiseled bottom edge */
+.button{
+  box-shadow:
+    inset 0 1px 0 rgba(255,239,196,.55),
+    inset 0 -2px 0 rgba(0,0,0,.20),
+    0 4px 0 #5a3a0e,
+    0 8px 16px rgba(0,0,0,.55);
+}
+.button:hover{transform:translateY(-1px);box-shadow:
+  inset 0 1px 0 rgba(255,239,196,.65),
+  inset 0 -2px 0 rgba(0,0,0,.20),
+  0 5px 0 #5a3a0e,
+  0 10px 18px rgba(0,0,0,.6)}
+.button.secondary{
+  box-shadow:0 4px 0 #1a0f06, 0 8px 16px rgba(0,0,0,.45);
+}
+.button.secondary:hover{box-shadow:0 5px 0 #1a0f06, 0 10px 18px rgba(0,0,0,.5)}
+
+/* Ornamental divider between hero and section */
+.divider{
+  display:flex;align-items:center;justify-content:center;gap:18px;
+  margin:0 auto;max-width:680px;
+  color:var(--gold-hi);padding:20px 0;
+}
+.divider .rule{flex:1;height:1px;background:linear-gradient(90deg, transparent, var(--gold) 50%, transparent)}
+.divider svg{flex-shrink:0;filter:drop-shadow(0 2px 4px rgba(0,0,0,.6))}
+
+/* Eyebrow tweak: small caps engraved */
+.eyebrow{
+  font-family:'Cinzel',serif;font-variant-caps:all-small-caps;letter-spacing:.32em;
+  text-shadow:0 1px 0 rgba(0,0,0,.6);
+}
+
+/* ============================================================
+   V7 PROFESIONAL — más editorial, más datos, menos ornamento
+   ============================================================ */
+.stats-strip{
+  display:grid;grid-template-columns:repeat(4, minmax(0, auto));
+  gap:32px;margin-top:28px;max-width:640px;
+  padding-top:24px;border-top:1px solid var(--line);
+}
+.stats-strip div{display:flex;flex-direction:column;gap:4px}
+.stats-strip dt{
+  font-family:'Cinzel',serif;font-size:.7rem;font-weight:600;
+  color:var(--muted);letter-spacing:.18em;text-transform:uppercase;
+}
+.stats-strip dd{
+  margin:0;font-family:'Cinzel',serif;font-size:2.2rem;font-weight:700;
+  color:var(--ink);line-height:1;letter-spacing:-.01em;
+}
+.stats-strip dd span{font-size:1rem;color:var(--dim);font-weight:500;margin-left:2px}
+
+@media (max-width: 720px){
+  .stats-strip{grid-template-columns:repeat(2, 1fr);gap:18px}
+  .stats-strip dd{font-size:1.7rem}
+}
+
+/* Tighter card hover, less aggressive */
+.card:hover{
+  border-color:var(--line-gold);
+  background:linear-gradient(180deg, rgba(50,34,20,.72), rgba(33,22,12,.58));
+  transform:translateY(-1px);
+  box-shadow:0 10px 22px rgba(0,0,0,.4);
+}
+
+/* Refined section heading hierarchy */
+.section-heading h2{
+  font-size:clamp(1.8rem, 3.4vw, 2.8rem);font-weight:700;
+}
+.section-heading p{font-size:.98rem}
+.section{padding:96px 0}
+.section.tight{padding:56px 0}
+</style>
+</head>
+<body>
+
+<div class="site-shell" data-screen-label="Landing Academia AoE3">
+
+  <!-- ============ TOP BAR ============ -->
+  <div class="topbar">
+    <div class="topbar-inner">
+      <a class="brand-mini" href="Landing.html">
+        <span class="brand-mini-mark">A</span>
+        <span class="brand-mini-text">Academia AoE3</span>
+      </a>
+      <dl class="topbar-stats" aria-label="Estado">
+        <div><dt>Civs</dt><dd>3<span>/22</span></dd></div>
+        <div><dt>Planes</dt><dd>3</dd></div>
+        <div><dt>Tools</dt><dd>35</dd></div>
+        <div><dt>Tests</dt><dd>9<span>/9</span></dd></div>
+      </dl>
+      <a class="patch-pill" href="#">
+        <span class="dot"></span>
+        Imperial · Patch 14.62381
+      </a>
+    </div>
+  </div>
+
+  <!-- ============ NAV ============ -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="Landing.html">
+        <span class="brand-mark" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h6"/><path d="M3 12h12"/><path d="M3 19h18"/><circle cx="20" cy="5" r="1.5"/><circle cx="18" cy="12" r="1.5"/></svg>
+        </span>
+        <span>
+          <span class="brand-title">Academia AoE3</span>
+          <span class="brand-subtitle">Decks · Shipments · Timings</span>
+        </span>
+      </a>
+      <nav class="nav-primary" aria-label="Principal">
+        <a href="Civilizaciones.html">Civilizaciones</a>
+        <a href="Plan.html">Planes</a>
+        <a href="#decks">Decks</a>
+        <a href="#analizar">Analizar</a>
+        <a href="#aprender">Aprender</a>
+        <a href="#operar">Operar</a>
+        <button class="nav-more" id="navMoreBtn" aria-expanded="false">Más <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+      </nav>
+      <div class="nav-drawer" id="navDrawer" hidden>
+        <div class="nav-drawer-inner" id="navDrawerInner"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <main>
+    <section class="hero">
+      <div class="hero-bg" aria-hidden="true">
+        <div class="hero-painting"></div>
+        <image-slot id="hero-painting" class="hero-image-slot"
+          placeholder="Suelta aquí una pintura AoE3 (1920×1080 ideal)"
+          fit="cover"></image-slot>
+        <!-- AoE3-inspired colonial port painting -->
+        <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <defs>
+            <radialGradient id="sun" cx="50%" cy="50%" r="50%">
+              <stop offset="0" stop-color="#fff4cf"/>
+              <stop offset=".35" stop-color="#ffd574"/>
+              <stop offset="1" stop-color="rgba(255,184,80,0)"/>
+            </radialGradient>
+            <linearGradient id="haze" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="#7a3416" stop-opacity=".65"/>
+              <stop offset="1" stop-color="#1c0f10" stop-opacity="1"/>
+            </linearGradient>
+            <linearGradient id="far" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="#502a2c" stop-opacity=".85"/>
+              <stop offset="1" stop-color="#1b1018" stop-opacity="1"/>
+            </linearGradient>
+            <linearGradient id="mid" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="#1c0f10"/>
+              <stop offset="1" stop-color="#0a0608"/>
+            </linearGradient>
+            <linearGradient id="fort" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="#150709"/>
+              <stop offset="1" stop-color="#000"/>
+            </linearGradient>
+            <linearGradient id="sea" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="#2a1410" stop-opacity="1"/>
+              <stop offset=".55" stop-color="#0a0610" stop-opacity="1"/>
+              <stop offset="1" stop-color="#050308" stop-opacity="1"/>
+            </linearGradient>
+            <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <line x1="0" y1="0" x2="0" y2="6" stroke="rgba(0,0,0,.18)" stroke-width="1"/>
+            </pattern>
+          </defs>
+
+          <!-- Sun & glow -->
+          <ellipse cx="1240" cy="600" rx="220" ry="80" fill="url(#sun)" opacity=".55"/>
+          <circle cx="1240" cy="580" r="92" fill="url(#sun)" opacity=".9"/>
+
+          <!-- Cloud streaks -->
+          <g fill="none" stroke="rgba(40,16,12,.35)" stroke-width="1.4">
+            <path d="M0,300 q60,-14 140,-2 q80,12 160,0 q70,-12 140,4 q70,18 140,-4 q70,-18 140,0"/>
+            <path d="M520,230 q60,-14 130,-2 q70,12 140,-2 q60,-10 130,4"/>
+            <path d="M1280,200 q60,-14 130,-2 q70,12 140,-2 q60,-10 130,4 q60,12 130,-2"/>
+            <path d="M120,420 q80,-6 160,2 q80,8 160,-4 q80,-12 160,0"/>
+          </g>
+
+          <!-- Distant haze layer -->
+          <path fill="url(#haze)" opacity=".55" d="M0,520 L1920,500 L1920,720 L0,720 Z"/>
+
+          <!-- Far mountains -->
+          <path fill="url(#far)" d="M0,560 L100,540 L240,560 L360,510 L500,560 L640,520 L800,560 L950,520 L1080,560 L1240,510 L1400,560 L1560,520 L1720,560 L1920,540 L1920,720 L0,720 Z"/>
+
+          <!-- Mid hills -->
+          <path fill="url(#mid)" d="M0,660 L120,630 L240,660 L380,620 L520,660 L680,630 L840,670 L1000,630 L1180,660 L1360,620 L1520,660 L1700,630 L1920,650 L1920,760 L0,760 Z"/>
+
+          <!-- Fortress (right-of-center, larger and more detailed) -->
+          <g fill="url(#fort)">
+            <!-- Main wall base -->
+            <rect x="980" y="600" width="320" height="80"/>
+            <!-- Crenellations (left run) -->
+            <rect x="980" y="590" width="18" height="14"/>
+            <rect x="1006" y="590" width="18" height="14"/>
+            <rect x="1032" y="590" width="18" height="14"/>
+            <rect x="1058" y="590" width="18" height="14"/>
+            <rect x="1084" y="590" width="18" height="14"/>
+            <!-- Crenellations (right run, around tower) -->
+            <rect x="1210" y="590" width="18" height="14"/>
+            <rect x="1236" y="590" width="18" height="14"/>
+            <rect x="1262" y="590" width="18" height="14"/>
+            <rect x="1288" y="590" width="18" height="14"/>
+            <!-- Central tower -->
+            <rect x="1124" y="510" width="60" height="100"/>
+            <polygon points="1124,510 1184,510 1154,478"/>
+            <!-- Tower windows -->
+            <rect x="1142" y="540" width="8" height="14" fill="#3a1010"/>
+            <rect x="1162" y="540" width="8" height="14" fill="#3a1010"/>
+            <rect x="1149" y="572" width="16" height="22" fill="#3a1010"/>
+            <!-- Flag pole on tower -->
+            <rect x="1153" y="446" width="2" height="34"/>
+            <polygon points="1155,448 1196,454 1155,462" fill="#7a1818"/>
+            <!-- Left bastion tower -->
+            <rect x="952" y="558" width="28" height="62"/>
+            <polygon points="952,558 980,558 966,540"/>
+            <rect x="958" y="580" width="6" height="10" fill="#3a1010"/>
+            <!-- Right bastion tower -->
+            <rect x="1300" y="558" width="28" height="62"/>
+            <polygon points="1300,558 1328,558 1314,540"/>
+            <rect x="1306" y="580" width="6" height="10" fill="#3a1010"/>
+          </g>
+
+          <!-- Distant tiny village on left hill -->
+          <g fill="#0a0608" opacity=".75">
+            <rect x="280" y="640" width="14" height="22"/>
+            <polygon points="278,640 296,640 287,628"/>
+            <rect x="306" y="648" width="10" height="14"/>
+            <polygon points="304,648 318,648 311,640"/>
+          </g>
+
+          <!-- Mid-distance frigate -->
+          <g transform="translate(1520,720) scale(.78)" opacity=".88">
+            <path d="M-100,0 Q-90,18 -60,22 L60,22 Q90,18 100,0 L90,-8 L-90,-8 Z" fill="#080406"/>
+            <rect x="-52" y="-78" width="2" height="78" fill="#0d0608"/>
+            <rect x="-2" y="-100" width="2" height="100" fill="#0d0608"/>
+            <rect x="48" y="-72" width="2" height="72" fill="#0d0608"/>
+            <path d="M-68,-54 Q-50,-66 -32,-54 L-32,-28 Q-50,-22 -68,-28 Z" fill="#1c1212"/>
+            <path d="M-68,-78 Q-50,-84 -32,-78 L-32,-60 Q-50,-56 -68,-60 Z" fill="#1c1212"/>
+            <path d="M-20,-72 Q0,-82 20,-72 L20,-46 Q0,-40 -20,-46 Z" fill="#1c1212"/>
+            <path d="M-20,-96 Q0,-100 20,-96 L20,-78 Q0,-74 -20,-78 Z" fill="#1c1212"/>
+            <path d="M30,-46 Q48,-58 66,-46 L66,-20 Q48,-14 30,-20 Z" fill="#1c1212"/>
+          </g>
+
+          <!-- Galleon foreground left, big -->
+          <g transform="translate(420,750)">
+            <!-- Hull -->
+            <path d="M-180,0 Q-170,36 -120,40 L120,40 Q170,36 180,0 L160,-14 L-160,-14 Z" fill="#080406"/>
+            <path d="M-160,-14 L160,-14 L148,-26 L-148,-26 Z" fill="#1d0d0a"/>
+            <!-- Cannon ports (small dots) -->
+            <g fill="#3a1010">
+              <rect x="-130" y="-4" width="6" height="6"/>
+              <rect x="-100" y="-4" width="6" height="6"/>
+              <rect x="-70" y="-4" width="6" height="6"/>
+              <rect x="-40" y="-4" width="6" height="6"/>
+              <rect x="60" y="-4" width="6" height="6"/>
+              <rect x="90" y="-4" width="6" height="6"/>
+              <rect x="120" y="-4" width="6" height="6"/>
+            </g>
+            <!-- Bowsprit -->
+            <rect x="-180" y="-30" width="34" height="3" transform="rotate(-22 -180 -30)" fill="#0d0608"/>
+            <!-- Foremast -->
+            <rect x="-92" y="-180" width="3" height="160" fill="#0d0608"/>
+            <!-- Mainmast -->
+            <rect x="-2" y="-220" width="3" height="200" fill="#0d0608"/>
+            <!-- Mizzenmast -->
+            <rect x="88" y="-160" width="3" height="140" fill="#0d0608"/>
+            <!-- Foresails -->
+            <path d="M-122,-110 Q-90,-128 -58,-110 L-58,-58 Q-90,-48 -122,-58 Z" fill="#2a1818"/>
+            <path d="M-122,-148 Q-90,-156 -58,-148 L-58,-118 Q-90,-110 -122,-118 Z" fill="#1c1010"/>
+            <path d="M-122,-176 Q-90,-180 -58,-176 L-58,-156 Q-90,-152 -122,-156 Z" fill="#1c1010"/>
+            <!-- Mainsails -->
+            <path d="M-44,-150 Q0,-170 44,-150 L44,-80 Q0,-70 -44,-80 Z" fill="#2a1818"/>
+            <path d="M-44,-188 Q0,-196 44,-188 L44,-158 Q0,-150 -44,-158 Z" fill="#1c1010"/>
+            <path d="M-44,-216 Q0,-220 44,-216 L44,-196 Q0,-192 -44,-196 Z" fill="#1c1010"/>
+            <!-- Mizzen sails -->
+            <path d="M56,-126 Q88,-140 120,-126 L120,-80 Q88,-72 56,-80 Z" fill="#2a1818"/>
+            <path d="M56,-156 Q88,-162 120,-156 L120,-132 Q88,-128 56,-132 Z" fill="#1c1010"/>
+            <!-- Top flag -->
+            <polygon points="0,-228 36,-222 0,-216" fill="#7a1818"/>
+          </g>
+
+          <!-- Tiny distant ship far right -->
+          <g transform="translate(1760,740) scale(.42)" opacity=".5">
+            <path d="M-40,0 Q-30,8 -20,10 L20,10 Q30,8 40,0 Z" fill="#0a0608"/>
+            <rect x="-1" y="-44" width="2" height="44" fill="#0a0608"/>
+            <path d="M-15,-36 Q0,-40 15,-36 L15,-16 Q0,-12 -15,-16 Z" fill="#1c1010"/>
+          </g>
+
+          <!-- Sea -->
+          <path d="M0,720 L1920,720 L1920,1080 L0,1080 Z" fill="url(#sea)"/>
+          <!-- Sun reflection on water -->
+          <ellipse cx="1240" cy="734" rx="280" ry="14" fill="rgba(255,184,80,.5)"/>
+          <ellipse cx="1240" cy="754" rx="200" ry="6" fill="rgba(255,184,80,.4)"/>
+          <ellipse cx="1240" cy="774" rx="120" ry="3" fill="rgba(255,184,80,.28)"/>
+          <ellipse cx="1240" cy="800" rx="80" ry="2" fill="rgba(255,184,80,.18)"/>
+
+          <!-- Wave lines -->
+          <g stroke="rgba(255,184,80,.08)" stroke-width="1" fill="none">
+            <path d="M0,780 q100,-3 200,0 q100,3 200,0 q100,-3 200,0 q100,3 200,0 q100,-3 200,0 q100,3 200,0 q100,-3 200,0 q100,3 200,0 q100,-3 200,0"/>
+            <path d="M0,850 q100,-3 200,0 q100,3 200,0 q100,-3 200,0 q100,3 200,0 q100,-3 200,0 q100,3 200,0 q100,-3 200,0 q100,3 200,0 q100,-3 200,0"/>
+            <path d="M0,920 q100,-3 200,0 q100,3 200,0 q100,-3 200,0 q100,3 200,0 q100,-3 200,0 q100,3 200,0 q100,-3 200,0 q100,3 200,0 q100,-3 200,0"/>
+          </g>
+
+          <!-- Foreground rocks -->
+          <path d="M0,940 L0,1080 L420,1080 Q320,940 220,940 Q130,930 80,940 Z" fill="#040206"/>
+          <path d="M1920,940 L1920,1080 L1500,1080 Q1600,940 1700,940 Q1790,930 1840,940 Z" fill="#040206"/>
+
+          <!-- Soldier silhouette on left rock (tricorn, musket) -->
+          <g transform="translate(220,900)" fill="#040206">
+            <ellipse cx="0" cy="0" rx="7" ry="26"/>
+            <circle cx="0" cy="-32" r="7"/>
+            <path d="M-14,-36 L14,-36 L10,-42 L-10,-42 Z"/>
+            <line x1="2" y1="-14" x2="30" y2="-44" stroke="#040206" stroke-width="3"/>
+            <ellipse cx="0" cy="28" rx="11" ry="3" opacity=".5"/>
+          </g>
+
+          <!-- Heraldic banner top-left corner -->
+          <g transform="translate(40,40)">
+            <rect x="-2" y="0" width="3" height="160" fill="#1a0a08"/>
+            <path d="M2,4 L100,4 L100,118 L52,106 L2,118 Z" fill="#5a1414" stroke="#8d6212" stroke-width="1.5" opacity=".92"/>
+            <path d="M2,4 L100,4 L100,118 L52,106 L2,118 Z" fill="url(#hatch)" opacity=".5"/>
+            <!-- Heraldic charge: cross with castle -->
+            <path d="M51,24 L51,90 M28,52 L74,52" stroke="#d4a23a" stroke-width="3" fill="none"/>
+            <rect x="48" y="60" width="6" height="20" fill="#d4a23a"/>
+            <circle cx="51" cy="40" r="3" fill="#d4a23a"/>
+            <!-- Top decorative finial -->
+            <circle cx="0" cy="-2" r="4" fill="#d4a23a" stroke="#8d6212" stroke-width="1"/>
+          </g>
+
+          <!-- Subtle engraving hatch overlay -->
+          <rect width="1920" height="1080" fill="url(#hatch)" opacity=".25"/>
+        </svg>
+      </div>
+
+      <div class="hero-content">
+        <div>
+          <span class="eyebrow">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 19h20"/><path d="M2 19l3-11 5 6 2-10 2 10 5-6 3 11"/></svg>
+            Academia de decisiones AoE3
+          </span>
+          <h1>Decks, shipments y timings<br>con <em>intención</em>.</h1>
+          <p class="lead">
+            Una academia para Age&nbsp;of&nbsp;Empires&nbsp;III que no se queda en listas de cartas: une civilización, plan,
+            opening, matchup y transición para que sepas <em style="color:var(--gold-hi);font-style:normal">qué hacer en partida</em>.
+          </p>
+          <dl class="stats-strip" aria-label="Estado del proyecto">
+            <div><dt>Tests</dt><dd>9<span>/9</span></dd></div>
+            <div><dt>Rutas estáticas</dt><dd>82</dd></div>
+            <div><dt>Herramientas</dt><dd>35</dd></div>
+            <div><dt>Warnings</dt><dd>0</dd></div>
+          </dl>
+          <div class="actions">
+            <a class="button" href="Plan.html">
+              Abrir plan ejemplo
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+            </a>
+            <a class="button secondary" href="Civilizaciones.html">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V8l4 2V6l3 2V4l4 4V8l3-2v4l4-2v13z"/><path d="M11 21v-5h2v5"/></svg>
+              Ver civilizaciones
+            </a>
+          </div>
+        </div>
+
+        <aside class="hero-panel" aria-label="Estado del MVP">
+          <div class="hero-panel-head">
+            <span>MVP ejecutado</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold-hi)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 6 6 .9-4.5 4.2 1 6.4L12 16.8 6.5 19.5l1-6.4L3 8.9 9 8z"/></svg>
+          </div>
+          <div class="hero-panel-body">
+            <ul class="signal-list">
+              <li>
+                <span class="icn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-4 8-8 10-4-2-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></span>
+                <div>
+                  <strong>Modelo propio AoE3</strong>
+                  <span>Plan = civ + deck + opening + ramas.</span>
+                </div>
+              </li>
+              <li>
+                <span class="icn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="1"/><circle cx="9" cy="11" r="2"/><path d="M21 17l-5-5-9 9"/></svg></span>
+                <div>
+                  <strong>Seed pack propio de civ heroes</strong>
+                  <span>8 SVG generados (FR/BR/OT/SP/DU/GE/RU/AZ); Nano Banana 2 reemplaza cuando haya key.</span>
+                </div>
+              </li>
+              <li>
+                <span class="icn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3h7v7"/><path d="M21 3l-9 9"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg></span>
+                <div>
+                  <strong>Fuentes visibles</strong>
+                  <span>AOE3 Explorer, Companion App y media oficial.</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ============ FEATURED DECISION ASSISTANT (RED) ============ -->
+    <section class="section tight" style="padding-top:64px">
+      <div class="wrap">
+        <div class="da-panel">
+          <div class="da-head">
+            <span class="da-emblem">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>
+            </span>
+            <div>
+              <div class="da-title">Decision Assistant</div>
+              <div class="da-sub">Plan recomendado según tu civ, mapa y rival.</div>
+            </div>
+            <span class="da-status">Coach v1 · LIVE</span>
+          </div>
+          <div class="da-body">
+            <div class="da-form">
+              <label>
+                <span>Mi civ</span>
+                <select id="daCiv">
+                  <option value="french">French</option>
+                  <option value="british">British</option>
+                  <option value="ottomans">Ottomans</option>
+                </select>
+              </label>
+              <label>
+                <span>Rival</span>
+                <select id="daRival">
+                  <option>Rush colonial</option>
+                  <option>Standard colonial</option>
+                  <option>Boom / FF greedy</option>
+                </select>
+              </label>
+              <label>
+                <span>Mapa</span>
+                <select id="daMap">
+                  <option>Land standard</option>
+                  <option>Defensible</option>
+                  <option>Open / trade route</option>
+                </select>
+              </label>
+            </div>
+            <div class="da-output" id="daOutput"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ORNAMENTAL DIVIDER ============ -->
+    <div class="wrap">
+      <div class="divider" aria-hidden="true">
+        <span class="rule"></span>
+        <svg width="56" height="42" viewBox="0 0 56 42" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+          <!-- crossed swords -->
+          <line x1="10" y1="6" x2="42" y2="38"/>
+          <line x1="46" y1="6" x2="14" y2="38"/>
+          <!-- crossguards -->
+          <line x1="6" y1="10" x2="14" y2="2"/>
+          <line x1="50" y1="10" x2="42" y2="2"/>
+          <!-- shield center -->
+          <path d="M22 14 L34 14 L34 22 Q34 30 28 32 Q22 30 22 22 Z" fill="none"/>
+          <path d="M28 18 L28 26 M24 21 L32 21"/>
+        </svg>
+        <span class="rule"></span>
+      </div>
+    </div>
+
+    <!-- ============ PLAN SELECTOR ============ -->
+    <section class="section" id="planes">
+      <div class="wrap">
+        <div class="section-heading">
+          <div class="col">
+            <span class="section-kicker"><span class="num">I</span>Selección de plan</span>
+            <h2>Elige un <em>plan</em>.</h2>
+          </div>
+          <p>La home ya funciona como herramienta: busca por civ, arquetipo o problema. Cada resultado lleva a una guía jugable con deck, opening y ramas.</p>
+        </div>
+
+        <div class="plan-selector">
+          <div class="selector-controls">
+            <label>
+              <span class="pill">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+                Buscar plan
+              </span>
+              <input id="planQuery" type="text" placeholder="French, rush, boom, anti-rush…" aria-label="Buscar plan">
+            </label>
+            <label>
+              <span class="pill">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"/><path d="M7 12h10"/><path d="M10 18h4"/></svg>
+                Tipo
+              </span>
+              <select id="planArchetype" aria-label="Filtrar por tipo">
+                <option value="all">Todos</option>
+                <option>Rush</option>
+                <option>Semi-FF</option>
+                <option>Boom</option>
+                <option>Timing</option>
+                <option>Control</option>
+                <option>Water</option>
+                <option>Treaty</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="plan-featured" id="planFeatured" style="--accent:#2f7dd1">
+            <div class="crest-sm">FR</div>
+            <div class="info">
+              <span class="label">Plan destacado · nuevo</span>
+              <div class="title">French Semi-FF flexible</div>
+              <div class="desc">Llegas a Fortress sin ceder todo el mapa y con respuesta si el rival aprieta.</div>
+            </div>
+            <a class="open-btn" href="Plan.html?id=french-semi-ff">
+              Abrir plan
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+          <div class="grid" id="planGrid"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ HERRAMIENTAS ============ -->
+    <section class="section wood-band">
+      <div class="wrap">
+        <div class="section-heading">
+          <div class="col">
+            <span class="section-kicker"><span class="num">II</span>Herramientas base</span>
+            <h2>Herramientas <em>base</em>.</h2>
+          </div>
+          <p>El primer corte cubre la experiencia mínima que diferencia una academia de una wiki: información conectada y orientada a decisiones.</p>
+        </div>
+
+        <div class="grid" id="featureGrid"></div>
+        <div style="text-align:center;margin-top:32px">
+          <a class="button secondary" href="Herramientas.html" style="min-height:42px">
+            Ver las 35 herramientas
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CRITERIOS + FUENTES ============ -->
+    <section class="section tight">
+      <div class="wrap">
+        <div class="grid two">
+          <div class="card" style="padding:24px">
+            <h3 style="font-size:1.45rem;margin-bottom:12px">Criterios 10/10</h3>
+            <ul class="list" id="pillars"></ul>
+          </div>
+          <div class="card" style="padding:24px">
+            <h3 style="font-size:1.45rem;margin-bottom:12px">Fuentes y assets</h3>
+            <ul class="list" id="sources"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ MINIMAP + LOG STRIP ============ -->
+  <section class="strip">
+    <div class="wrap strip-inner">
+      <div class="mini">
+        <div class="mini-head">Minimapa · Academia</div>
+        <div class="mini-canvas" aria-hidden="true">
+          <svg viewBox="0 0 200 140" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <radialGradient id="miniGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0" stop-color="rgba(241,207,136,.45)"/>
+                <stop offset="1" stop-color="rgba(241,207,136,0)"/>
+              </radialGradient>
+            </defs>
+            <rect width="200" height="140" fill="#08110a"/>
+            <g fill="none" stroke="rgba(216,173,87,.16)">
+              <path d="M0 36 L200 28"/><path d="M0 72 L200 78"/><path d="M0 108 L200 102"/>
+              <path d="M40 0 L48 140"/><path d="M120 0 L112 140"/>
+            </g>
+            <!-- player base (gold) -->
+            <circle cx="55" cy="95" r="12" fill="url(#miniGlow)"/>
+            <rect x="50" y="90" width="10" height="10" fill="#f1cf88" stroke="#5a3a0e"/>
+            <!-- enemy base (red) -->
+            <circle cx="152" cy="42" r="10" fill="rgba(188,75,52,.4)"/>
+            <rect x="148" y="38" width="8" height="8" fill="#bc4b34" stroke="#3a0a0a"/>
+            <!-- treasures -->
+            <polygon points="100,60 104,68 96,68" fill="#d4a526"/>
+            <polygon points="75,40 79,48 71,48" fill="#d4a526"/>
+            <polygon points="130,98 134,106 126,106" fill="#d4a526"/>
+            <!-- scout route -->
+            <path d="M58 92 Q90 60 152 42" fill="none" stroke="rgba(216,173,87,.7)" stroke-width="1" stroke-dasharray="3 3"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="slot">
+        <div class="slot-head">
+          <span class="slot-tag">Asset pending</span>
+          <span class="slot-mini">Pack propio v0.1</span>
+        </div>
+        <div class="slot-body">
+          <div class="slot-art">
+            <svg viewBox="0 0 80 100" width="80" height="100" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="40" cy="32" r="14"/>
+              <path d="M16 90 q24 -34 48 0"/>
+              <path d="M28 28 q12 -14 24 0"/>
+            </svg>
+          </div>
+          <div class="slot-text">
+            <strong>Civ heroes con cabeza</strong>
+            <p>Los 8 SVG seed están obrados; cuando Nano Banana 2 entre con clave, sustituye estas imágenes uno a uno.</p>
+            <a class="slot-cta" href="#">Ver pipeline
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="log">
+        <div class="log-head">
+          <span>Log de la academia</span>
+          <span class="log-meta">Mensajes</span>
+        </div>
+        <ul class="log-list">
+          <li><span class="t">2026-05-21</span><span>Build:</span> 82 rutas estáticas prerenderizadas (era 32)</li>
+          <li><span class="t">2026-05-21</span><span>Tests:</span> 9/9 verdes · integridad de datos OK</li>
+          <li><span class="t">2026-05-19</span><span>Editorial:</span> Source provenance v1 (3 fuentes vivas)</li>
+          <li><span class="t">2026-05-17</span><span>Pipeline:</span> seed pack hero generado — 8 SVG (FR/BR/OT/SP/DU/GE/RU/AZ)</li>
+          <li><span class="t">2026-05-14</span><span>Roadmap:</span> 100 pasos hacia 10/10 documentados</li>
+        </ul>
+        <a class="slot-cta" href="#" style="margin-top:10px">Ver changelog completo
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="wrap footer-grid" id="footerGrid"></div>
+    <div class="wrap footer-base">
+      <div class="brand-mini">
+        <span class="brand-mini-mark">A</span>
+        <span class="brand-mini-text">Academia AoE3</span>
+      </div>
+      <span class="footer-tagline">MVP editorial auditado — todas las citas con fuente visible.</span>
+      <span class="footer-credit">Imágenes oficiales como referencia visual; asset pack propio pendiente.</span>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+/* =========================================================
+   DATA: real del repo (academy.ts, SiteShell.tsx, page.tsx)
+   ========================================================= */
+
+/* --- inline icon factory (Heroicons/Lucide-ish outline 1.8) --- */
+function icon(name, size=18){
+  const paths = {
+    home:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/>',
+    search:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',
+    swords:'<path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6"/><path d="M16 16l4 4"/><path d="M19 21l2-2"/>',
+    trending:'<path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/>',
+    users:'<circle cx="9" cy="8" r="4"/><path d="M2 21v-2a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+    crown:'<path d="M3 7l5 4 4-7 4 7 5-4-2 12H5z"/>',
+    timer:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M9 2h6"/>',
+    cards:'<rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/>',
+    crosshair:'<circle cx="12" cy="12" r="9"/><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/>',
+    badgealert:'<circle cx="12" cy="12" r="9"/><path d="M12 8v4"/><path d="M12 16h.01"/>',
+    eye:'<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+    file:'<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/>',
+    shield:'<path d="M12 2l8 4v6c0 5-4 8-8 10-4-2-8-5-8-10V6z"/>',
+    shieldcheck:'<path d="M12 2l8 4v6c0 5-4 8-8 10-4-2-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/>',
+    castle:'<path d="M3 21V8l4 2V6l3 2V4l4 4V8l3-2v4l4-2v13z"/><path d="M11 21v-5h2v5"/>',
+    list:'<path d="M3 6h18"/><path d="M3 12h18"/><path d="M3 18h18"/>',
+    map:'<polygon points="3 6 9 4 15 6 21 4 21 18 15 20 9 18 3 20"/><line x1="9" y1="4" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="20"/>',
+    package:'<path d="M3 7l9-4 9 4"/><path d="M3 7v10l9 4 9-4V7"/><path d="M3 7l9 4 9-4"/><path d="M12 11v10"/>',
+    images:'<rect x="3" y="5" width="18" height="14" rx="1"/><circle cx="9" cy="11" r="2"/><path d="M21 17l-5-5-9 9"/>',
+    extlink:'<path d="M14 3h7v7"/><path d="M21 3l-9 9"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/>',
+    wallet:'<rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/><circle cx="17" cy="14" r="1.4"/>',
+    book:'<path d="M4 5a2 2 0 0 1 2-2h13v18H6a2 2 0 0 1-2-2z"/><path d="M4 5v14"/>',
+    flame:'<path d="M12 3s4 4 4 8a4 4 0 0 1-8 0c0-2 1-3 2-4-2 2-2 5 0 7"/>',
+    landmark:'<path d="M3 21h18"/><path d="M4 21V10"/><path d="M20 21V10"/><path d="M9 21V12"/><path d="M15 21V12"/><polygon points="12,3 20,9 4,9"/>',
+    anchor:'<circle cx="12" cy="6" r="2"/><path d="M12 8v13"/><path d="M5 17a7 7 0 0 0 14 0"/><path d="M3 17h4M17 17h4"/>',
+    sliders:'<path d="M4 6h16"/><path d="M7 12h10"/><path d="M10 18h4"/>',
+  };
+  return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(paths[name]||'')+'</svg>';
+}
+
+/* --- NAV (SiteShell.tsx) --- */
+const navGroups = [
+  { label:"Base", links:[
+    { href:"/", label:"Inicio", icon:"home" },
+    { href:"/learn", label:"Learn", icon:"search" },
+    { href:"/modes", label:"Modos", icon:"swords" },
+    { href:"/roadmap", label:"100", icon:"trending" },
+  ]},
+  { label:"Entrenar", links:[
+    { href:"/career", label:"Carrera", icon:"users" },
+    { href:"/civ-mastery", label:"Mastery", icon:"crown" },
+    { href:"/opening-timer", label:"Timer", icon:"timer" },
+    { href:"/deck-builder", label:"Builder", icon:"wallet" },
+    { href:"/matchup-scout", label:"Scout", icon:"crosshair" },
+    { href:"/series-prep", label:"BO3/5", icon:"swords" },
+    { href:"/errors", label:"Errores", icon:"badgealert" },
+  ]},
+  { label:"Analizar", links:[
+    { href:"/replay-coach", label:"Coach", icon:"eye" },
+    { href:"/replay-upload", label:"Upload", icon:"file" },
+    { href:"/submit-replay", label:"Submit", icon:"file" },
+    { href:"/replay-import", label:"Import", icon:"file" },
+    { href:"/parser-solution", label:"Parser", icon:"shieldcheck" },
+    { href:"/analysis", label:"Análisis", icon:"eye" },
+    { href:"/analyzer", label:"Analyzer", icon:"badgealert" },
+  ]},
+  { label:"Aprender", links:[
+    { href:"/guides", label:"Guías", icon:"file" },
+    { href:"/civs", label:"Civs", icon:"castle" },
+    { href:"/decks", label:"Decks", icon:"wallet" },
+    { href:"/deck-checker", label:"Checker", icon:"shieldcheck" },
+    { href:"/openings", label:"Openings", icon:"timer" },
+    { href:"/shipments", label:"Shipments", icon:"package" },
+    { href:"/maps", label:"Mapas", icon:"map" },
+    { href:"/cards", label:"Cartas", icon:"book" },
+    { href:"/matchups", label:"Matchups", icon:"crosshair" },
+    { href:"/knowledge", label:"Search", icon:"search" },
+  ]},
+  { label:"Operar", links:[
+    { href:"/ai-coach", label:"IA", icon:"search" },
+    { href:"/trust", label:"Trust", icon:"shieldcheck" },
+    { href:"/patch-tracker", label:"Patches", icon:"shieldcheck" },
+    { href:"/source-admin", label:"Admin", icon:"list" },
+    { href:"/vod-pipeline", label:"VOD", icon:"eye" },
+    { href:"/resources", label:"Fuentes", icon:"extlink" },
+    { href:"/source-provenance", label:"Citas", icon:"shieldcheck" },
+    { href:"/source-queue", label:"Queue", icon:"list" },
+    { href:"/stats", label:"Stats", icon:"search" },
+    { href:"/replay-lab", label:"Replays", icon:"eye" },
+    { href:"/art-lab", label:"Arte", icon:"images" },
+  ]},
+];
+
+/* old nav removed — drawer below covers the full menu */
+
+/* --- Decision Assistant logic --- */
+(function(){
+  const civ = document.getElementById('daCiv');
+  const riv = document.getElementById('daRival');
+  const map = document.getElementById('daMap');
+  const out = document.getElementById('daOutput');
+  if (!civ || !out) return;
+
+  const recipes = {
+    french:   { plan:'french-semi-ff',   title:'French Semi-FF flexible', ship:'3 CDB → 700 Wood → 4 CDB / def', scout:'Stable+rax rival', age:'Castle vía Politician económico' },
+    british:  { plan:'british-manor-boom', title:'British Manor Boom seguro', ship:'3 Vill → 700 Wood → 6 Longbow', scout:'Forward villager o forward base', age:'Castle vía Politician defensivo' },
+    ottomans: { plan:'ottoman-jan-rush', title:'Ottoman Janissary pressure', ship:'3 Hussars → 5 Jans → 700 Coin', scout:'Torre o defensa cerrada rival', age:'Castle vía político militar' }
+  };
+  const dangerMap = {
+    'Rush colonial':       'Timing antes de tu 4 CDB / 4 manor / 5 Jans.',
+    'Standard colonial':   'Mapa libre y greed castiga.',
+    'Boom / FF greedy':    'Que el rival llegue a su power spike sin pagar peaje.'
+  };
+
+  function render(){
+    const r = recipes[civ.value];
+    out.innerHTML = `
+      <h4>Plan recomendado</h4>
+      <div class="out-row"><span class="out-label">Plan</span><span class="out-val"><b>${r.title}</b></span></div>
+      <div class="out-row"><span class="out-label">Shipments</span><span class="out-val">${r.ship}</span></div>
+      <div class="out-row"><span class="out-label">Age-up</span><span class="out-val">${r.age}</span></div>
+      <div class="out-row"><span class="out-label">Scout</span><span class="out-val">${r.scout}</span></div>
+      <div class="out-row"><span class="out-label">Peligro</span><span class="out-val">${dangerMap[riv.value]}</span></div>
+      <div class="out-row"><span class="out-label">Plan B</span><span class="out-val">Cancela greed, prepara batch defensivo cerca de TC.</span></div>
+      <div style="margin-top:6px"><a class="button" href="Plan.html?id=${r.plan}" style="padding:10px 18px;font-size:.84rem">Abrir plan completo <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg></a></div>
+    `;
+  }
+  [civ,riv,map].forEach(el => el.addEventListener('change', render));
+  render();
+})();
+
+/* --- PLANS --- */
+const civsById = {
+  french:{name:'French'},
+  british:{name:'British'},
+  ottomans:{name:'Ottomans'},
+};
+const plans = [
+  { id:'french-semi-ff', title:'French Semi-FF flexible', civId:'french', archetype:'Semi-FF',
+    mode:'Supremacy 1v1', difficulty:'Intermediate',
+    promise:'Llegas a Fortress sin ceder todo el mapa y con respuesta si el rival aprieta.',
+    matchupTags:['anti-rush','standard','vs boom'], reviewStatus:'needs-review' },
+  { id:'british-manor-boom', title:'British Manor Boom seguro', civId:'british', archetype:'Boom',
+    mode:'Supremacy 1v1', difficulty:'Start',
+    promise:'Conviertes casas en ventaja económica sin olvidar que el rival también juega.',
+    matchupTags:['vs standard','vs greedy','anti-rush'], reviewStatus:'needs-review' },
+  { id:'ottoman-jan-rush', title:'Ottoman Janissary pressure', civId:'ottomans', archetype:'Rush',
+    mode:'Supremacy 1v1', difficulty:'Start',
+    promise:'Golpeas antes de que el rival ordene su partida y transicionas si la defensa aguanta.',
+    matchupTags:['vs greedy','vs FF','tempo'], reviewStatus:'needs-review' },
+];
+const archIcon = { Rush:'flame','Semi-FF':'swords', Boom:'landmark', Timing:'crosshair', Control:'shield', Water:'anchor', Treaty:'landmark' };
+
+const planGrid = document.getElementById('planGrid');
+const planQuery = document.getElementById('planQuery');
+const planArch = document.getElementById('planArchetype');
+
+function renderPlans(){
+  const q = (planQuery.value||'').trim().toLowerCase();
+  const a = planArch.value;
+  const filtered = plans.filter(p => {
+    const civ = civsById[p.civId];
+    const hay = (p.title+' '+(civ?.name||'')+' '+p.archetype+' '+p.promise+' '+p.matchupTags.join(' ')).toLowerCase();
+    return (!q || hay.includes(q)) && (a==='all' || p.archetype===a);
+  });
+  planGrid.innerHTML = filtered.length ? filtered.map(p => {
+    const civ = civsById[p.civId];
+    return `
+      <a class="card" href="Plan.html?id=${p.id}">
+        <div class="card-top">
+          <span class="icon-tile">${icon(archIcon[p.archetype]||'swords',22)}</span>
+          <span class="status">${p.reviewStatus}</span>
+        </div>
+        <h3>${p.title}</h3>
+        <p>${p.promise}</p>
+        <div class="meta-row">
+          <span class="pill">${civ?.name||p.civId}</span>
+          <span class="pill">${p.mode}</span>
+          <span class="pill">${p.difficulty}</span>
+        </div>
+      </a>`;
+  }).join('') : `<p style="color:var(--muted);padding:14px;grid-column:1/-1">Sin resultados para esos filtros.</p>`;
+}
+planQuery.addEventListener('input', renderPlans);
+planArch.addEventListener('change', renderPlans);
+renderPlans();
+
+/* --- FEATURES (academy.ts) --- */
+const features = [
+  { title:"Modo Carrera",       body:"Dashboard personal con objetivo, civ main, nivel, plan semanal y rutas de práctica.", href:"/career",       icon:"users",        signal:"training OS" },
+  { title:"Civ Mastery",        body:"Escalera de 5 niveles por civilización: identidad, opening, deck, scouting y replay.", href:"/civ-mastery",  icon:"crown",        signal:"22 rutas" },
+  { title:"Opening Timer",      body:"Timer interactivo con pasos, scouting obligatorio, score y reglas de reset.",          href:"/opening-timer",icon:"timer",        signal:"practice v1" },
+  { title:"Replay Coach",       body:"Formulario de review que convierte age-ups, shipments y scouting en turning point y drill.", href:"/replay-coach", icon:"eye",     signal:"coach v1" },
+  { title:"Deck Builder",       body:"Constructor por plan con score, roles, cartas core, greed, alertas y swaps sugeridos.", href:"/deck-builder", icon:"wallet",     signal:"builder v1" },
+  { title:"Matchup Scout",      body:"Mi civ + rival + mapa → plan, primer peligro, scouting y envíos seguros.",             href:"/matchup-scout",icon:"crosshair",   signal:"ranked prep" },
+  { title:"Errores",            body:"Biblioteca de síntomas, diagnósticos, correcciones y drills conectados a herramientas.",href:"/errors",       icon:"badgealert", signal:"7 errores" },
+  { title:"IA con citas",       body:"Workbench del futuro coach: tools, corpus, citations y guardrails anti-invención.",   href:"/ai-coach",     icon:"search",      signal:"guardrails" },
+  { title:"Trust",              body:"Sello de confianza para separar canonical, fixture, fuente viva, seed y bloqueo.",     href:"/trust",        icon:"shieldcheck", signal:"no humo" },
+  { title:"Replay upload",      body:"Drag/drop local para meter replays en cola, preparar fixture y ejecutar parser en workspace.", href:"/replay-upload", icon:"file", signal:"queue local" },
+  { title:"Patch tracker",      body:"Updates oficiales/candidatos, patch-risk y targets de revisión por guía o tool.",     href:"/patch-tracker",icon:"shield",      signal:"patch-risk" },
+  { title:"VOD pipeline",       body:"YouTube/Twitch pasan a metadata, tesis, deck, shipments, matchup y drill.",            href:"/vod-pipeline", icon:"eye",         signal:"ingestion" },
+  { title:"Series prep",        body:"Preparador BO3/BO5 con civ pool, mapa, ban, game plan y scouting.",                    href:"/series-prep",  icon:"swords",      signal:"BO3/BO5" },
+  { title:"Source admin",       body:"Panel local para capturar URLs antes de convertirlas en source queue o provenance.",  href:"/source-admin", icon:"list",        signal:"admin local" },
+  { title:"Learn SEO",          body:"Landings indexables para búsquedas de builds, replay analysis, deck checker y matchup scout.", href:"/learn", icon:"search",  signal:"SEO" },
+  { title:"Guías",              body:"Lecciones editoriales para entender decks, macro, scouting y mapa.",                   href:"/guides",       icon:"file",        signal:"8 guías base" },
+  { title:"Análisis",           body:"Partidas desglosadas por timeline, error clave y práctica posterior.",                 href:"/analysis",     icon:"eye",         signal:"4 análisis" },
+  { title:"Analyzer",           body:"Herramienta manual para meter timings y recibir diagnóstico post-game.",               href:"/analyzer",     icon:"badgealert",  signal:"post-game v1" },
+  { title:"Fuentes",            body:"Radar intensivo de webs, foros, wikis, Reddit, YouTube, Twitch, TikTok, Discord y herramientas.", href:"/resources", icon:"extlink", signal:"40+ fuentes" },
+  { title:"Roadmap 100",        body:"Los 100 pasos del plan 100/100 convertidos en fases, entregables y estado.",           href:"/roadmap",      icon:"trending",    signal:"100 pasos" },
+  { title:"Source queue",       body:"Cola accionable para convertir patches, foros, vídeos y tools en contenido fiable.",   href:"/source-queue", icon:"list",        signal:"P0/P1/P2" },
+  { title:"Stats matrix",       body:"Contrato de datos para meta, jugadores, replays, mapas y contenido sin inventar stats.",href:"/stats",        icon:"search",     signal:"5 dominios" },
+  { title:"Replay lab",         body:"Pipeline de import, timeline, deck audit e insights para análisis de partidas.",       href:"/replay-lab",   icon:"eye",         signal:"parser-ready" },
+  { title:"Replay import",      body:"Pega JSON o texto de parser externo y genera timeline, warnings y campos normalizados.",href:"/replay-import",icon:"file",       signal:"tool v1" },
+  { title:"Art lab",            body:"Briefs y prompts para crear arte propio inspirado por AoE3 y futuro Nano Banana 2.",   href:"/art-lab",      icon:"images",      signal:"asset queue" },
+  { title:"Planes",             body:"La unidad central: civ, deck, opening, shipments, ramas y benchmarks.",                href:"/plans/french-semi-ff", icon:"crown", signal:"4 planes core" },
+  { title:"Decks",              body:"Cartas core, flex y trampas, explicadas como decisiones de partida.",                  href:"/decks",        icon:"wallet",      signal:"4 decks comentados" },
+  { title:"Deck checker",       body:"Comprueba si tu deck tiene core, defensa, transición y demasiado greed.",              href:"/deck-checker", icon:"shieldcheck", signal:"tool v1" },
+  { title:"Shipment trainer",   body:"Escenarios de scouting para elegir el envío correcto bajo presión.",                   href:"/shipments",    icon:"package",     signal:"4 escenarios" },
+  { title:"Map helper",         body:"Trade route, agua, natives, tesoros y riesgos que cambian el plan.",                   href:"/maps",         icon:"map",         signal:"5 mapas seed" },
+  { title:"Knowledge core",     body:"Búsqueda interna en civs, cartas, decks, planes, mapas y escenarios.",                 href:"/knowledge",    icon:"search",      signal:"pre-chat IA" },
+  { title:"Openings",           body:"Timelines con pasos, scouting y puntos de decisión.",                                  href:"/openings",     icon:"timer",       signal:"4 aperturas" },
+  { title:"Cartas",             body:"No solo qué hacen: cuándo enviarlas y contra qué compiten.",                           href:"/cards",        icon:"package",     signal:"20+ cartas seed" },
+  { title:"Matchups",           body:"Briefs rápidos para elegir deck y primer desvío.",                                     href:"/matchups",     icon:"crosshair",   signal:"3 arquetipos" },
+  { title:"Civilizaciones",     body:"Identidad, spikes, errores comunes y planes recomendados.",                            href:"/civs",         icon:"castle",      signal:"22 civs atlas" },
+];
+
+function routeHref(h){
+  if (h === '/') return 'Landing.html';
+  if (h === '/civs') return 'Civilizaciones.html';
+  if (h && h.startsWith('/plans/')) return 'Plan.html?id=' + h.slice(7);
+  return h;
+}
+
+/* Populate the "Más" drawer with all 35 tools */
+(function(){
+  const drawer = document.getElementById('navDrawer');
+  const inner  = document.getElementById('navDrawerInner');
+  const btn    = document.getElementById('navMoreBtn');
+  inner.innerHTML = navGroups.map(g => `
+    <div class="nav-drawer-group">
+      <div class="label">${g.label}</div>
+      ${g.links.map(l => `<a href="${routeHref(l.href)}">${icon(l.icon,14)}<span>${l.label}</span></a>`).join('')}
+    </div>
+  `).join('');
+  btn.addEventListener('click', () => {
+    const open = !drawer.hidden;
+    drawer.hidden = open;
+    btn.setAttribute('aria-expanded', String(!open));
+  });
+  document.addEventListener('click', (e) => {
+    if (!drawer.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+      drawer.hidden = true; btn.setAttribute('aria-expanded','false');
+    }
+  });
+})();
+
+/* Render rich footer columns */
+(function(){
+  const footer = document.getElementById('footerGrid');
+  if (!footer) return;
+  const cols = [
+    { title:'Aprender',   keys:['/guides','/civs','/decks','/openings','/cards','/matchups'] },
+    { title:'Entrenar',   keys:['/career','/civ-mastery','/opening-timer','/deck-builder','/matchup-scout','/series-prep','/errors'] },
+    { title:'Analizar',   keys:['/replay-coach','/replay-upload','/replay-lab','/analyzer','/analysis','/parser-solution'] },
+    { title:'Operar',     keys:['/ai-coach','/trust','/patch-tracker','/resources','/source-provenance','/roadmap'] },
+  ];
+  const allLinks = navGroups.flatMap(g => g.links);
+  function findLabel(href){
+    const l = allLinks.find(x => x.href === href);
+    return l ? l.label : href.replace('/','');
+  }
+  const colsHTML = cols.map(c => `
+    <div class="footer-col">
+      <h4>${c.title}</h4>
+      <ul>${c.keys.map(k => `<li><a href="${routeHref(k)}">${findLabel(k)}</a></li>`).join('')}</ul>
+    </div>
+  `).join('');
+  footer.innerHTML = `
+    <div class="footer-col lead-col">
+      <span class="seal"><span class="dot"></span> Academia AoE3 · v0.1</span>
+      <h4 style="font-size:1.04rem;letter-spacing:.08em;border-bottom:0;padding-bottom:0;color:var(--ink);font-variant-caps:normal">Decisión primero, lista después.</h4>
+      <p>Para Age of Empires III. Civilización + plan + opening + matchup + transición conectados. Toda fuente está visible y cada timing es practicable.</p>
+    </div>
+    ${colsHTML}
+  `;
+})();
+
+/* Featured 8 tools on home (rest live in Herramientas.html) */
+const featuredKeys = ['Civ Mastery','Opening Timer','Deck Builder','Matchup Scout','Replay Coach','IA con citas','Patch tracker','Series prep'];
+const featuredFeatures = featuredKeys
+  .map(k => features.find(f => f.title === k))
+  .filter(Boolean);
+
+document.getElementById('featureGrid').innerHTML = featuredFeatures.map(f => `
+  <a class="card" href="${routeHref(f.href)}">
+    <div class="card-top">
+      <span class="icon-tile">${icon(f.icon,22)}</span>
+      <span class="status">${f.signal}</span>
+    </div>
+    <h3>${f.title}</h3>
+    <p>${f.body}</p>
+  </a>
+`).join('');
+
+/* --- PILLARS (Criterios 10/10) --- */
+const pillars = [
+  { label:"Decks como decisiones",   icon:"wallet" },
+  { label:"Shipments con ramas",     icon:"trending" },
+  { label:"Benchmarks practicables", icon:"timer" },
+  { label:"Mapas y natives importan",icon:"map" },
+  { label:"Modos separados",         icon:"users" },
+  { label:"Fuentes visibles",        icon:"book" },
+];
+document.getElementById('pillars').innerHTML = pillars.map(p =>
+  `<li><span class="icn">${icon(p.icon,16)}</span><div>${p.label}</div></li>`
+).join('');
+
+/* --- SOURCES --- */
+const sources = [
+  { label:"AOE3 Explorer tools",            url:"https://aoe3explorer.com/tools",
+    note:"Referencia viva para herramientas, decks, counter, replay parser y datos comunitarios." },
+  { label:"AOE 3 Companion App",            url:"https://eso-community.net/viewtopic.php?t=24568",
+    note:"Referencia de utilidad comunitaria: deck builder, cards, maps, natives, ELO y counters." },
+  { label:"Age of Empires official media",  url:"https://www.ageofempires.com/games/aoeiiide/",
+    note:"Imágenes oficiales usadas como fondos remotos, sin redistribuir archivos locales." },
+];
+document.getElementById('sources').innerHTML = sources.map(s => `
+  <li>
+    <span class="icn">${icon('extlink',16)}</span>
+    <div>
+      <a href="${s.url}" target="_blank" rel="noreferrer">${s.label} ${icon('extlink',12)}</a>
+      <span class="note">${s.note}</span>
+    </div>
+  </li>
+`).join('');
+</script>
+
+</body>
+</html>

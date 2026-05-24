@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Civilización · Academia AoE3</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="data-aoe3.js"></script>
+<style>
+:root{
+  --coal:#140c06;--bark:#1d1208;--bark-2:#261810;--panel:#2b1d11;--panel-2:#34251a;
+  --ink:#f5e9cf;--ink-soft:#ead8b3;--muted:#c7b48a;--dim:#95805c;--faint:#6e5c40;
+  --gold:#d8ad57;--gold-hi:#f1cf88;--gold-deep:#8d6212;--brass:#b88a36;
+  --red:#bc4b34;--burgundy:#7a2515;
+  --line:rgba(245,233,207,.12);--line-2:rgba(245,233,207,.22);--line-gold:rgba(216,173,87,.36);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--coal)}
+body{min-height:100vh;color:var(--ink);font-family:'Source Sans 3',Georgia,serif;font-size:16px;line-height:1.55;
+  background:
+    radial-gradient(circle at 14% 6%, rgba(216,173,87,.10), transparent 38%),
+    radial-gradient(circle at 88% 14%, rgba(122,37,21,.14), transparent 42%),
+    linear-gradient(180deg, #160d07 0%, #110a05 100%);
+  background-attachment:fixed}
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit;color:inherit}
+h1,h2,h3,h4{font-family:'Cinzel',serif;font-weight:700;line-height:1.1}
+.wrap{position:relative;z-index:1;width:min(1240px,calc(100% - 40px));margin:0 auto}
+
+/* === Shared topbar/nav (same as other pages) === */
+.topbar{position:relative;z-index:31;border-bottom:1px solid rgba(216,173,87,.18);
+  background:linear-gradient(180deg, rgba(10,6,3,.96), rgba(8,5,3,.96));font-family:'Cinzel',serif}
+.topbar-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;
+  width:min(1320px,calc(100% - 32px));margin:0 auto;padding:8px 0}
+.brand-mini{display:flex;align-items:center;gap:10px;color:var(--gold-hi);text-decoration:none}
+.brand-mini-mark{display:grid;place-items:center;width:26px;height:26px;
+  border:1px solid var(--gold-deep);color:var(--gold-hi);font-family:'Cinzel',serif;
+  font-weight:700;font-size:.78rem;
+  background:radial-gradient(circle at 30% 30%, rgba(216,173,87,.35), transparent 60%)}
+.brand-mini-text{font-size:.78rem;font-weight:700;letter-spacing:.20em;font-variant-caps:all-small-caps}
+.topbar-stats{display:flex;align-items:center;gap:22px;flex:1;justify-content:center;flex-wrap:wrap}
+.topbar-stats div{display:flex;align-items:baseline;gap:6px}
+.topbar-stats dt{font-size:.62rem;font-weight:700;color:var(--muted);letter-spacing:.16em;text-transform:uppercase}
+.topbar-stats dd{margin:0;font-family:'Cinzel',serif;font-size:.95rem;font-weight:700;color:var(--ink);line-height:1}
+.topbar-stats dd span{color:var(--dim);font-size:.7rem;font-weight:500;margin-left:1px}
+.patch-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:2px;
+  border:1px solid var(--gold-deep);color:var(--gold-hi);text-decoration:none;
+  background-image:
+    repeating-linear-gradient(90deg, rgba(0,0,0,.10) 0 1px, transparent 1px 6px),
+    linear-gradient(180deg, rgba(255,210,140,.18) 0%, rgba(255,210,140,.02) 30%, rgba(0,0,0,.30) 100%),
+    linear-gradient(180deg, #6e1818 0%, #4a0d0d 60%, #2a0606 100%);
+  box-shadow:inset 0 1px 0 rgba(255,230,180,.32), inset 0 -1px 0 rgba(0,0,0,.45), 0 2px 4px rgba(0,0,0,.4);
+  text-shadow:0 1px 0 rgba(0,0,0,.5);
+  font-family:'Cinzel',serif;font-size:.7rem;font-weight:700;letter-spacing:.14em;font-variant-caps:all-small-caps}
+.patch-pill .dot{width:6px;height:6px;border-radius:50%;background:#f1cf88;box-shadow:0 0 6px #f1cf88}
+
+.nav{position:sticky;top:0;z-index:30;border-bottom:1px solid rgba(216,173,87,.28);
+  background:linear-gradient(180deg, rgba(20,12,6,.95), rgba(15,9,5,.92));backdrop-filter:blur(14px);
+  box-shadow:0 8px 30px rgba(0,0,0,.55)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;
+  width:min(1320px,calc(100% - 32px));margin:0 auto;padding:14px 0;position:relative}
+.brand{display:flex;align-items:center;gap:14px;min-width:200px}
+.brand-mark{display:grid;place-items:center;width:44px;height:44px;flex:0 0 auto;
+  border:1px solid rgba(216,173,87,.55);
+  background:radial-gradient(circle at 30% 30%, rgba(216,173,87,.45), transparent 60%),
+    linear-gradient(145deg, rgba(216,173,87,.28), rgba(188,75,52,.22));
+  color:var(--gold-hi);box-shadow:inset 0 0 0 1px rgba(245,233,207,.08), 0 2px 6px rgba(0,0,0,.5)}
+.brand-title{display:block;font-family:'Cinzel',serif;font-size:1.05rem;font-weight:700;color:var(--ink);font-variant-caps:all-small-caps;letter-spacing:.10em}
+.brand-subtitle{display:block;color:var(--dim);font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.16em;margin-top:2px}
+.nav-primary{display:flex;align-items:center;gap:4px;flex:1;justify-content:center}
+.nav-primary a,.nav-more{display:inline-flex;align-items:center;gap:6px;padding:9px 14px;
+  color:var(--ink-soft);text-decoration:none;cursor:pointer;background:transparent;border:1px solid transparent;
+  font-family:'Cinzel',serif;font-size:.84rem;font-weight:600;letter-spacing:.12em;font-variant-caps:all-small-caps;transition:.15s ease}
+.nav-primary a:hover,.nav-more:hover,.nav-primary a.active{color:var(--gold-hi);background:rgba(216,173,87,.08);border-color:rgba(216,173,87,.22)}
+.nav-more svg{transition:transform .15s}.nav-more[aria-expanded="true"] svg{transform:rotate(180deg)}
+.nav-drawer{position:absolute;left:0;right:0;top:100%;background:linear-gradient(180deg, rgba(20,12,6,.98), rgba(15,9,5,.98));border-bottom:1px solid var(--gold-deep);box-shadow:0 16px 40px rgba(0,0,0,.6);z-index:5}
+.nav-drawer-inner{width:min(1320px,calc(100% - 32px));margin:0 auto;padding:24px 0;display:grid;grid-template-columns:repeat(5,1fr);gap:18px}
+.nav-drawer-group{display:flex;flex-direction:column;gap:6px}
+.nav-drawer-group .label{color:var(--gold);font-family:'Cinzel',serif;font-size:.7rem;font-weight:700;letter-spacing:.24em;text-transform:uppercase;padding-bottom:8px;border-bottom:1px solid rgba(216,173,87,.18);margin-bottom:4px}
+.nav-drawer-group a{display:flex;align-items:center;gap:8px;padding:5px 6px;color:var(--ink-soft);text-decoration:none;font-size:.84rem;font-weight:500;border-radius:2px;transition:.12s}
+.nav-drawer-group a:hover{background:rgba(216,173,87,.08);color:var(--gold-hi)}
+.nav-drawer-group a svg{opacity:.6;flex:0 0 auto}
+
+/* === Civ hero === */
+.civ-hero{position:relative;padding:60px 0 40px;overflow:hidden;
+  background:linear-gradient(0deg, rgba(20,12,6,.92), rgba(20,12,6,.55) 50%, rgba(20,12,6,.85)),
+    linear-gradient(135deg, var(--accent,#2f7dd1), rgba(0,0,0,.6));
+  border-bottom:1px solid var(--line)}
+.civ-hero::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(45deg, transparent 0 10px, rgba(0,0,0,.08) 10px 11px)}
+.crumb{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.32em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:14px;font-variant-caps:all-small-caps;position:relative;z-index:1}
+.crumb a{color:var(--gold-hi)}
+.civ-hero-row{display:flex;gap:28px;align-items:flex-start;flex-wrap:wrap;position:relative;z-index:1}
+.crest-lg{display:grid;place-items:center;width:120px;height:120px;flex:0 0 auto;
+  border:2px solid rgba(245,233,207,.45);color:#fff;font-family:'Cinzel',serif;font-size:2rem;font-weight:800;
+  background:rgba(0,0,0,.5);backdrop-filter:blur(6px);box-shadow:0 14px 30px rgba(0,0,0,.55)}
+.civ-hero h1{font-size:clamp(2.6rem,5vw,4.2rem);color:var(--ink);margin-bottom:6px;
+  text-shadow:0 1px 0 #5a3a0e, 0 2px 0 #3a2305, 0 3px 0 #1a0f06, 0 6px 14px rgba(0,0,0,.6)}
+.region{font-family:'Cinzel',serif;font-size:.78rem;color:var(--muted);letter-spacing:.20em;text-transform:uppercase;margin-bottom:14px}
+.civ-hero .identity{max-width:680px;color:var(--ink-soft);font-size:1.1rem;line-height:1.55}
+.diff-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.diff{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:2px;
+  border:1px solid var(--gold-deep);color:var(--gold-hi);
+  background-image:
+    repeating-linear-gradient(90deg, rgba(0,0,0,.10) 0 1px, transparent 1px 6px),
+    linear-gradient(180deg, rgba(255,210,140,.18) 0%, rgba(255,210,140,.02) 30%, rgba(0,0,0,.30) 100%),
+    linear-gradient(180deg, #6e1818 0%, #4a0d0d 60%, #2a0606 100%);
+  box-shadow:inset 0 1px 0 rgba(255,230,180,.30), inset 0 -1px 0 rgba(0,0,0,.42), 0 2px 4px rgba(0,0,0,.4);
+  text-shadow:0 1px 0 rgba(0,0,0,.5);
+  font-family:'Cinzel',serif;font-size:.74rem;font-weight:700;letter-spacing:.10em;font-variant-caps:all-small-caps}
+.diff.ghost{background-image:none;background:transparent;color:var(--ink-soft);border-color:var(--line-2);text-shadow:none;box-shadow:none}
+
+/* === Sections === */
+.section{padding:64px 0;border-bottom:1px solid var(--line)}
+.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:24px;margin-bottom:24px;flex-wrap:wrap}
+.kicker{font-family:'Cinzel',serif;font-size:.78rem;letter-spacing:.18em;color:var(--muted);
+  font-variant-caps:all-small-caps;display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.kicker .num{display:inline-flex;align-items:center;justify-content:center;
+  padding:5px 12px;border-radius:2px;border:1px solid var(--gold-deep);color:var(--gold-hi);
+  background-image:
+    repeating-linear-gradient(90deg, rgba(0,0,0,.10) 0 1px, transparent 1px 6px),
+    linear-gradient(180deg, rgba(255,210,140,.18) 0%, rgba(255,210,140,.02) 30%, rgba(0,0,0,.30) 100%),
+    linear-gradient(180deg, #6e1818 0%, #4a0d0d 60%, #2a0606 100%);
+  box-shadow:inset 0 1px 0 rgba(255,230,180,.32), inset 0 -1px 0 rgba(0,0,0,.45);
+  font-family:'Cinzel',serif;font-size:.78rem;font-weight:700;letter-spacing:.10em;
+  text-shadow:0 1px 0 rgba(0,0,0,.5)}
+.section-head h2{font-size:clamp(1.6rem,2.8vw,2.2rem);color:var(--ink)}
+.section-head h2 em{font-style:normal;color:var(--gold-hi)}
+
+.spec-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.spec{padding:20px;border:1px solid var(--line);background:linear-gradient(180deg, rgba(43,29,17,.6), rgba(29,18,8,.5))}
+.spec h3{font-family:'Cinzel',serif;font-size:.85rem;color:var(--gold);letter-spacing:.18em;text-transform:uppercase;margin-bottom:14px;font-variant-caps:all-small-caps}
+.spec h3.warn{color:var(--red)}
+.spec ul{list-style:none;display:grid;gap:8px}
+.spec li{color:var(--ink-soft);font-size:.96rem;padding-left:18px;position:relative;line-height:1.5}
+.spec li::before{content:"";position:absolute;left:0;top:.65em;width:10px;height:1px;background:var(--gold)}
+.spec.mistakes li::before{background:var(--red)}
+
+.plan-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:8px}
+.plan-card{position:relative;display:flex;flex-direction:column;gap:8px;
+  border:1px solid var(--line);padding:18px 20px;
+  background:linear-gradient(180deg, rgba(43,29,17,.6), rgba(29,18,8,.5));
+  transition:.18s;text-decoration:none;color:inherit}
+.plan-card::before{content:"";position:absolute;inset:0 0 auto;height:1px;background:var(--line-gold)}
+.plan-card:hover{border-color:var(--line-gold);transform:translateY(-1px);box-shadow:0 10px 22px rgba(0,0,0,.4)}
+.plan-card .meta{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
+.plan-card .arche{font-family:'Cinzel',serif;font-size:.74rem;color:var(--gold);letter-spacing:.18em;font-variant-caps:all-small-caps}
+.plan-card .open{font-family:'Cinzel',serif;font-size:.74rem;color:var(--gold-hi);letter-spacing:.14em;font-variant-caps:all-small-caps;display:inline-flex;align-items:center;gap:4px}
+.plan-card h3{font-size:1.2rem;color:var(--ink);margin:4px 0}
+.plan-card p{color:var(--muted);font-size:.94rem;line-height:1.5}
+
+/* === Footer (same shape) === */
+.footer{padding:54px 0 32px;background:linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.85));border-top:1px solid var(--gold-deep)}
+.footer::before{content:"";display:block;height:2px;width:100%;background:linear-gradient(90deg, transparent, var(--brass) 30%, var(--brass) 70%, transparent);opacity:.5;margin-top:-54px;margin-bottom:48px}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1fr;gap:32px;margin-bottom:40px}
+.footer-col h4{font-family:'Cinzel',serif;font-size:.74rem;font-weight:700;color:var(--gold-hi);letter-spacing:.24em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(216,173,87,.18);font-variant-caps:all-small-caps}
+.footer-col ul{list-style:none;display:grid;gap:6px}
+.footer-col li a{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:.88rem;text-decoration:none;font-family:'Source Sans 3',serif;transition:.15s}
+.footer-col li a:hover{color:var(--gold-hi)}
+.footer-col.lead-col p{color:var(--muted);font-size:.94rem;line-height:1.55;margin-top:8px}
+.footer-col.lead-col .seal{display:inline-flex;align-items:center;gap:10px;padding:8px 14px;border:1px solid var(--gold-deep);background:rgba(216,173,87,.08);color:var(--gold-hi);font-family:'Cinzel',serif;font-size:.78rem;letter-spacing:.18em;font-variant-caps:all-small-caps;margin-bottom:14px}
+.footer-col.lead-col .seal .dot{width:6px;height:6px;border-radius:50%;background:var(--gold-hi);box-shadow:0 0 6px var(--gold-hi)}
+.footer-base{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-top:24px;border-top:1px solid rgba(216,173,87,.12);color:var(--dim);font-size:.84rem}
+.footer-base .brand-mini{color:var(--ink-soft)}
+.footer-base .footer-tagline{color:var(--ink-soft);font-style:italic}
+
+@media (max-width: 1100px){.footer-grid{grid-template-columns:repeat(3,1fr)}.footer-col.lead-col{grid-column:1 / -1}.spec-grid,.plan-grid{grid-template-columns:1fr}.nav-drawer-inner{grid-template-columns:repeat(2,1fr)}}
+@media (max-width: 720px){.topbar-stats{display:none}.nav-primary a{padding:9px 8px;font-size:.78rem}.civ-hero-row{flex-direction:column}.footer-grid{grid-template-columns:repeat(2,1fr)}}
+@media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important}}
+</style>
+</head>
+<body>
+
+<div class="site-shell" data-screen-label="Civ — Academia AoE3">
+
+  <div class="topbar">
+    <div class="topbar-inner">
+      <a class="brand-mini" href="Landing.html"><span class="brand-mini-mark">A</span><span class="brand-mini-text">Academia AoE3</span></a>
+      <dl class="topbar-stats">
+        <div><dt>Civs</dt><dd>3<span>/22</span></dd></div>
+        <div><dt>Planes</dt><dd>3</dd></div>
+        <div><dt>Tools</dt><dd>35</dd></div>
+        <div><dt>Tests</dt><dd>9<span>/9</span></dd></div>
+      </dl>
+      <a class="patch-pill" href="#"><span class="dot"></span>Imperial · Patch 14.62381</a>
+    </div>
+  </div>
+
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="Landing.html">
+        <span class="brand-mark" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h6"/><path d="M3 12h12"/><path d="M3 19h18"/><circle cx="20" cy="5" r="1.5"/><circle cx="18" cy="12" r="1.5"/></svg>
+        </span>
+        <span><span class="brand-title">Academia AoE3</span><span class="brand-subtitle">Decks · Shipments · Timings</span></span>
+      </a>
+      <nav class="nav-primary">
+        <a href="Civilizaciones.html" class="active">Civilizaciones</a>
+        <a href="Plan.html">Planes</a>
+        <a href="Herramientas.html">Herramientas</a>
+        <a href="Landing.html#analizar">Analizar</a>
+        <a href="Landing.html#aprender">Aprender</a>
+        <button class="nav-more" id="navMoreBtn" aria-expanded="false">Más <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+      </nav>
+      <div class="nav-drawer" id="navDrawer" hidden>
+        <div class="nav-drawer-inner" id="navDrawerInner"></div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="civ-hero" id="hero">
+      <div class="wrap">
+        <div class="crumb"><a href="Landing.html">Inicio</a> &nbsp;/&nbsp; <a href="Civilizaciones.html">Civilizaciones</a> &nbsp;/&nbsp; <span id="crumbName"></span></div>
+        <div class="civ-hero-row">
+          <div class="crest-lg" id="crest">FR</div>
+          <div>
+            <h1 id="name">Civilización</h1>
+            <div class="region" id="region"></div>
+            <p class="identity" id="identity"></p>
+            <div class="diff-row" id="diffRow"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="kicker"><span class="num">I</span>Identidad</div>
+        <h2 style="margin-bottom:14px">Tempo y <em>spikes</em>.</h2>
+        <p class="identity" id="tempo" style="max-width:680px;color:var(--ink-soft);margin-bottom:28px"></p>
+        <div class="spec-grid">
+          <div class="spec"><h3>Power spikes</h3><ul id="specSpikes"></ul></div>
+          <div class="spec mistakes"><h3 class="warn">Errores frecuentes</h3><ul id="specMistakes"></ul></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="kicker"><span class="num">II</span>Planes recomendados</div>
+        <h2 style="margin-bottom:14px">Decks y planes <em>activos</em>.</h2>
+        <div class="plan-grid" id="planGrid"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-grid" id="footerGrid"></div>
+    <div class="wrap footer-base">
+      <div class="brand-mini"><span class="brand-mini-mark">A</span><span class="brand-mini-text">Academia AoE3</span></div>
+      <span class="footer-tagline">MVP editorial auditado — todas las citas con fuente visible.</span>
+      <span>Imágenes oficiales como referencia visual; asset pack propio pendiente.</span>
+    </div>
+  </footer>
+</div>
+
+<script>
+const {icon, navGroups} = window.AoE3;
+
+function routeHref(h){
+  if (h === '/') return 'Landing.html';
+  if (h === '/civs') return 'Civilizaciones.html';
+  if (h && h.startsWith('/plans/')) return 'Plan.html?id=' + h.slice(7);
+  return h;
+}
+
+const civs = {
+  french:{
+    name:'French',short:'FR',region:'Europa occidental',difficulty:'Intermediate',accent:'#2f7dd1',
+    identity:'Economía elástica con Coureurs des Bois, semi-FF muy natural y caballería que castiga ventanas pequeñas.',
+    tempo:'Colonial estable hacia Fortress con presión de caballería.',
+    spikes:['3 CDB estabiliza','700 Wood abre infraestructura','Fortress con Skirmisher/Dragoon'],
+    mistakes:['Mandar eco sin scouting','Entrar a Fortress sin anti-cav','Sobreinvertir en Hussar si el rival cierra'],
+    plans:[{id:'french-semi-ff',title:'French Semi-FF flexible',arche:'Semi-FF',promise:'Llegas a Fortress sin ceder mapa y con respuesta si el rival aprieta.'}]
+  },
+  british:{
+    name:'British',short:'BR',region:'Europa occidental',difficulty:'Start',accent:'#c04a2b',
+    identity:'Boom de manors, masa temprana flexible y economía que premia construir casas con intención.',
+    tempo:'Colonial ancho: eco + defensa + timing de Longbow/Musketeer.',
+    spikes:['Manor boom','6 Longbow para estabilizar','Timing con Musketeer + Longbow'],
+    mistakes:['Hacer manors sin seguridad','No convertir eco en timing','Quedarse sin madera para casas/rax'],
+    plans:[{id:'british-manor-boom',title:'British Manor Boom seguro',arche:'Boom',promise:'Conviertes casas en ventaja económica sin olvidar que el rival también juega.'}]
+  },
+  ottomans:{
+    name:'Ottomans',short:'OT',region:'Mediterráneo oriental',difficulty:'Start',accent:'#19a77a',
+    identity:'Producción automática de aldeanos, timings militares directos y decisiones claras entre presión y Fortress.',
+    tempo:'Presión colonial o FF con shipments militares de alto impacto.',
+    spikes:['Janissary mass','700 Coin hacia Fortress','Falconets/Spahi como cierre'],
+    mistakes:['No forzar nada con ventaja de tempo','Perder Jans gratis','Tardar en transicionar si el rush falla'],
+    plans:[{id:'ottoman-jan-rush',title:'Ottoman Janissary pressure',arche:'Rush',promise:'Golpeas antes de que el rival ordene su partida y transicionas si la defensa aguanta.'}]
+  }
+};
+
+const id = new URLSearchParams(location.search).get('id') || 'french';
+const civ = civs[id] || civs.french;
+document.documentElement.style.setProperty('--accent', civ.accent);
+document.getElementById('hero').style.setProperty('--accent', civ.accent);
+document.title = civ.name + ' · Academia AoE3';
+document.getElementById('crumbName').textContent = civ.name;
+document.getElementById('name').innerHTML = civ.name + ' <em style="font-style:normal;color:var(--gold-hi)">·</em> <span style="color:var(--gold-hi);font-style:normal">civ</span>';
+document.getElementById('crest').textContent = civ.short;
+document.getElementById('region').textContent = civ.region;
+document.getElementById('identity').textContent = civ.identity;
+document.getElementById('tempo').textContent = civ.tempo;
+document.getElementById('diffRow').innerHTML = `
+  <span class="diff">${civ.difficulty}</span>
+  <span class="diff ghost">${civ.region}</span>
+  <span class="diff ghost">Supremacy 1v1</span>
+`;
+document.getElementById('specSpikes').innerHTML = civ.spikes.map(s => `<li>${s}</li>`).join('');
+document.getElementById('specMistakes').innerHTML = civ.mistakes.map(s => `<li>${s}</li>`).join('');
+document.getElementById('planGrid').innerHTML = civ.plans.map(p => `
+  <a class="plan-card" href="Plan.html?id=${p.id}">
+    <div class="meta"><span class="arche">${p.arche}</span><span class="open">Abrir plan <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg></span></div>
+    <h3>${p.title}</h3>
+    <p>${p.promise}</p>
+  </a>
+`).join('');
+
+/* Drawer */
+(function(){
+  const drawer = document.getElementById('navDrawer');
+  const inner  = document.getElementById('navDrawerInner');
+  const btn    = document.getElementById('navMoreBtn');
+  inner.innerHTML = navGroups.map(g => `
+    <div class="nav-drawer-group"><div class="label">${g.label}</div>
+      ${g.links.map(l => `<a href="${routeHref(l.href)}">${icon(l.icon,14)}<span>${l.label}</span></a>`).join('')}
+    </div>`).join('');
+  btn.addEventListener('click', () => { const open = !drawer.hidden; drawer.hidden = open; btn.setAttribute('aria-expanded', String(!open)); });
+  document.addEventListener('click', (e) => { if (!drawer.contains(e.target) && e.target !== btn && !btn.contains(e.target)) { drawer.hidden = true; btn.setAttribute('aria-expanded','false'); } });
+})();
+
+/* Footer */
+(function(){
+  const footer = document.getElementById('footerGrid');
+  const cols = [
+    { title:'Aprender',   keys:['/guides','/civs','/decks','/openings','/cards','/matchups'] },
+    { title:'Entrenar',   keys:['/career','/civ-mastery','/opening-timer','/deck-builder','/matchup-scout','/series-prep','/errors'] },
+    { title:'Analizar',   keys:['/replay-coach','/replay-upload','/replay-lab','/analyzer','/analysis','/parser-solution'] },
+    { title:'Operar',     keys:['/ai-coach','/trust','/patch-tracker','/resources','/source-provenance','/roadmap'] },
+  ];
+  const allLinks = navGroups.flatMap(g => g.links);
+  const findLabel = href => (allLinks.find(x => x.href === href) || {}).label || href.replace('/','');
+  footer.innerHTML = `
+    <div class="footer-col lead-col">
+      <span class="seal"><span class="dot"></span> Academia AoE3 · v0.1</span>
+      <h4 style="font-size:1.04rem;letter-spacing:.08em;border-bottom:0;padding-bottom:0;color:var(--ink);font-variant-caps:normal">Decisión primero, lista después.</h4>
+      <p>Para Age of Empires III. Civilización + plan + opening + matchup + transición conectados.</p>
+    </div>
+    ${cols.map(c => `<div class="footer-col"><h4>${c.title}</h4><ul>${c.keys.map(k => `<li><a href="${routeHref(k)}">${findLabel(k)}</a></li>`).join('')}</ul></div>`).join('')}
+  `;
+})();
+</script>
+</body>
+</html>
