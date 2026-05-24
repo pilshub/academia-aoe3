@@ -1,118 +1,111 @@
 import Link from "next/link";
-import { ArrowRight, AlertTriangle } from "@/components/icons";
-import { EvidencePanel } from "@/components/EvidencePanel";
-import { PageHero } from "@/components/PageHero";
 import { SiteShell } from "@/components/SiteShell";
 import { aoe3Civilizations, getPlan } from "@/data/aoe3";
-import { civFlagUrl } from "@/lib/aoe3/aoe3explorer-assets";
 
-// Civs con SVG seed en public/assets/generated/civ-{id}.svg como fallback
-// si aoe3explorer.com no tiene la flag oficial.
-const CIV_HERO_SVG = new Set([
-  "french",
-  "british",
-  "ottomans",
-  "spanish",
-  "dutch",
-  "germans",
-  "russians",
-  "aztecs",
-]);
+export const metadata = {
+  title: "Civilizaciones · Academia AoE3",
+  description: "Atlas editorial de las 22 civilizaciones AoE3:DE con identidad, tempo, power spikes y planes recomendados.",
+};
 
-export default function CivsPage() {
+const needsReviewCount = aoe3Civilizations.filter((c) => c.reviewStatus === "needs-review").length;
+
+export default function CivilizacionesPage() {
   return (
     <SiteShell>
       <main>
-        <PageHero
-          eyebrow="Civilizaciones"
-          title="Perfiles que explican identidad, tempo y errores."
-          body="Cada civ conecta directamente con planes recomendados. El objetivo no es memorizar stats, sino entender que partida quiere jugar."
-        />
+        <section className="page-hero">
+          <div className="wrap">
+            <div className="crumb">
+              <Link href="/">Inicio</Link> &nbsp;/&nbsp; Civilizaciones
+            </div>
+            <h1>
+              22 civilizaciones <em>auditables</em>.
+            </h1>
+            <p>
+              Cada civ con identidad estratégica, tempo, power spikes y errores comunes. Conectada a sus planes
+              recomendados, decks, openings y matchups. ReviewStatus visible en todo momento.
+            </p>
+            <dl className="stats">
+              <div>
+                <dt>Civs</dt>
+                <dd>{aoe3Civilizations.length}</dd>
+              </div>
+              <div>
+                <dt>Needs-review</dt>
+                <dd>{needsReviewCount}</dd>
+              </div>
+              <div>
+                <dt>Flags oficiales</dt>
+                <dd>21</dd>
+              </div>
+            </dl>
+          </div>
+        </section>
+
         <section className="section">
-          <div className="wrap grid">
-            {aoe3Civilizations.map((civ) => {
-              const officialFlag = civFlagUrl(civ.id);
-              const fallbackSvg = CIV_HERO_SVG.has(civ.id) ? `/assets/generated/civ-${civ.id}.svg` : null;
-              return (
-              <Link className="card" key={civ.id} href={`/civs/${civ.id}`}>
-                {officialFlag ? (
-                  <div
-                    style={{
-                      width: "100%",
-                      aspectRatio: "5 / 3",
-                      background: `linear-gradient(135deg, ${civ.accent}33, rgba(17,17,15,0.4))`,
-                      display: "grid",
-                      placeItems: "center",
-                      borderRadius: "8px 8px 0 0",
-                      borderBottom: "1px solid var(--line)",
-                    }}
-                  >
-                    <img
-                      className="civ-hero"
-                      src={officialFlag}
-                      alt={`${civ.name} flag oficial`}
-                      loading="lazy"
-                      style={{ maxWidth: "60%", maxHeight: "80%", objectFit: "contain" }}
-                    />
-                  </div>
-                ) : fallbackSvg ? (
-                  <img
-                    className="civ-hero"
-                    src={fallbackSvg}
-                    alt={`${civ.name} hero tile (seed)`}
-                    width={400}
-                    height={240}
-                    loading="lazy"
-                    style={{ width: "100%", height: "auto", display: "block", borderRadius: "8px 8px 0 0" }}
-                  />
-                ) : (
-                  <div
-                    className="civ-band"
-                    style={
-                      {
-                        "--civ-image": `linear-gradient(135deg, ${civ.accent}, rgba(17, 17, 15, 0.2))`,
-                        "--accent": civ.accent,
-                      } as React.CSSProperties
-                    }
-                  >
+          <div className="wrap">
+            <div className="kicker">
+              <span className="num">I</span>Atlas
+            </div>
+            <div className="civ-grid">
+              {aoe3Civilizations.map((civ) => (
+                <Link
+                  className="civ-card"
+                  key={civ.id}
+                  href={`/civs/${civ.id}`}
+                  style={{ ["--accent" as string]: civ.accent }}
+                >
+                  <div className="civ-band" style={{ ["--accent" as string]: civ.accent }}>
                     <span className="crest">{civ.shortName}</span>
                   </div>
-                )}
-                <div className="card-top">
-                  <span className="status">{civ.reviewStatus}</span>
-                  <span className="pill">{civ.difficulty}</span>
-                </div>
-                <h3>{civ.name}</h3>
-                <p>{civ.identity}</p>
-                <div className="meta-row">
-                  <span className="pill">{civ.region}</span>
-                  <span className="pill">{civ.tempo}</span>
-                </div>
-                <EvidencePanel evidence={civ.evidence} compact />
-                <h3>Errores comunes</h3>
-                <ul className="list">
-                  {civ.mistakes.map((mistake) => (
-                    <li key={mistake}>
-                      <AlertTriangle size={15} aria-hidden="true" /> {mistake}
-                    </li>
-                  ))}
-                </ul>
-                <div className="actions">
-                  <span className="button secondary">
-                    Ver detalle <ArrowRight size={16} aria-hidden="true" />
-                  </span>
-                  {civ.recommendedPlanIds.slice(0, 1).map((planId) => {
-                    const plan = getPlan(planId);
-                    return plan ? (
-                      <span className="pill" key={plan.id}>
-                        plan: {plan.title}
-                      </span>
-                    ) : null;
-                  })}
-                </div>
-              </Link>
-              );
-            })}
+                  <div className="civ-body">
+                    <div className="civ-meta">
+                      <span className="name">{civ.name}</span>
+                      <span className="region">{civ.region}</span>
+                    </div>
+                    <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                      <span className="diff">{civ.difficulty}</span>
+                      <span className="diff ghost">{civ.reviewStatus}</span>
+                    </div>
+                    <p className="identity">{civ.identity}</p>
+                    <p className="tempo">{civ.tempo}</p>
+                    <div className="civ-spec">
+                      <div>
+                        <h4>Power spikes</h4>
+                        <ul>
+                          {civ.powerSpikes.slice(0, 3).map((s) => (
+                            <li key={s}>{s}</li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div className="mistakes">
+                        <h4 style={{ color: "var(--red)" }}>Errores comunes</h4>
+                        <ul>
+                          {civ.mistakes.slice(0, 3).map((m) => (
+                            <li key={m}>{m}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                    {civ.recommendedPlanIds.length > 0 ? (
+                      <div className="recommend">
+                        <span className="label">Planes recomendados</span>
+                        <div className="plans">
+                          {civ.recommendedPlanIds.map((id) => {
+                            const plan = getPlan(id);
+                            return plan ? (
+                              <span className="plan-pill" key={id}>
+                                {plan.title}
+                              </span>
+                            ) : null;
+                          })}
+                        </div>
+                      </div>
+                    ) : null}
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
         </section>
       </main>
